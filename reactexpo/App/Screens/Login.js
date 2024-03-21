@@ -31,7 +31,7 @@ export default function Login() {
         marginTop:20,
         width:Dimensions.get('screen').width*0.8,
         }}>
-            <Text style={{fontSize:20,color:Colors.white}}>Login with Google</Text>
+            <Text style={{fontSize:20,color:Colors.white}}>Login with Google!</Text>
         </TouchableOpacity>
 
 
