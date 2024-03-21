@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import Login from './App/Screens/Login';
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
 import SignInWithOAuth from './App/Components/SignInWithOAuth';
+import Home from './App/Screens/Home';
 
 
 
