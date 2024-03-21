@@ -15,7 +15,7 @@ export default function App() {
           <Home/>
         </SignedIn>
         <SignedOut>
-        <SignInWithOAuth/>
+       <Login/>
          
         </SignedOut>
       </SafeAreaView>
