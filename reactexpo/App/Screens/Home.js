@@ -5,12 +5,14 @@ import { useAuth } from '@clerk/clerk-expo';
 export default function Home() {
     const { isLoaded,signOut } = useAuth();
   return (
-    <View>
-        <Button title='SignOut'
+    <View style={{padding:20,marginTop:20}}>
+
+      <Header/>
+        {/* <Button title='SignOut'
         onPress={()=> signOut()}>
 
         </Button>
-      <Text>Home</Text>
+      <Text>Home</Text> */}
     </View>
   )
 }
