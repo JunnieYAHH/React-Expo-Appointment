@@ -17,9 +17,9 @@ return (
                      alignItems:'center'
  
                      }}>
-          <Image source={{uri:user.imageUrl}}
+          {/* <Image source={{uri:user.imageUrl}}
             style={{width:45,height:45,borderRaduis:99}}
-          />
+          /> */}
            <View>
              <Text>Hello</Text>
            <Text style={{fontSize:18,
@@ -28,7 +28,7 @@ return (
            </View>
         </View>
         <Ionicons name="notifications-outline" 
-        size={24} 
+        size={28} 
         color="black" />
     </View>
   )

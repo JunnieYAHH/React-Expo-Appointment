@@ -9,6 +9,7 @@ import TabNavigation from './App/Navigation/TabNavigation';
 
 
 
+
 export default function App() {
   return (
     <ClerkProvider publishableKey={"pk_test_Z29yZ2VvdXMtc3VuYmVhbS03LmNsZXJrLmFjY291bnRzLmRldiQ"}>
