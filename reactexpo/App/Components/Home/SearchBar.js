@@ -9,8 +9,6 @@ export default function SearchBar() {
         <Ionicons name="search-outline" size={24} color="black" />
             <TextInput placeholder='Seacrh'/>
         </View>
-
-      
     </View>
   )
 }

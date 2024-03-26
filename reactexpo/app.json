@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "reactexpo",
+    "scheme":"reactexpo",
     "slug": "reactexpo",
     "version": "1.0.0",
     "orientation": "portrait",
