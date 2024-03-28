@@ -20,15 +20,20 @@ const userSchema = new mongoose.Schema(
             required: [true, "password is requied"],
         },
         isAdmin: {
-            type: String,
-            default: 'user'
+            type: Boolean,
         },
-        address: {
-            type: String,
-        },
-        phone: {
-            type: String,
-        },
+        image: [
+            {
+                public_id: {
+                    type: String,
+                    required: true
+                },
+                url: {
+                    type: String,
+                    required: true
+                },
+            }
+        ]
 
     },
     { timestamps: true }

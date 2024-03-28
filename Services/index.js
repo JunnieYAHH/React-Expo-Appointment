@@ -3,6 +3,32 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const multer = require('multer');
+
+// const FILE_TYPE_MAP = {
+//     'image/png': 'png',
+//     'image/jpeg': 'jpeg',
+//     'image/jpg': 'jpg'
+// };
+
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         const isValid = FILE_TYPE_MAP[file.mimetype];
+//         let uploadError = new Error('invalid image type');
+
+//         if (isValid) {
+//             uploadError = null;
+//         }
+//         cb(uploadError, 'public/uploads');
+//     },
+//     filename: function (req, file, cb) {
+//         const fileName = file.originalname.split(' ').join('-');
+//         const extension = FILE_TYPE_MAP[file.mimetype];
+//         cb(null, `${fileName}-${Date.now()}.${extension}`);
+//     }
+// });
+
+// const uploadOptions = multer({ storage: storage });
 
 const app = express();
 const port = 8000;
@@ -34,39 +60,53 @@ app.listen(port, () => {
 const User = require('./models/user');
 const bcrypt = require('bcryptjs');
 
-//endpoint to register in the app
-app.post("/register", async (req, res) => {
-    try {
-        const existingUser = await User.findOne({ email: req.body.email })
+const upload = require('./utils/multer')
+const cloudinary = require('cloudinary');
 
-        //validation
-        if (existingUser) {
-            return res.status(400).json({
-                success: false,
-                message: 'User already registered'
-            })
-        }
-        //Hash Password
+cloudinary.config({
+    cloud_name: 'ds7jufrxl',
+    api_key: '827497948387292',
+    api_secret: 'qZygsilGaETbzQ5rnN8v-k8Ai4g',
+})
+
+//endpoint to register in the app
+app.post("/register", upload.single('image'), async (req, res) => {
+    try {
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(req.body.password, salt)
         req.body.password = hashedPassword
 
-
-        // const file = req.file;
-        // const fileName = file.filename;
-
-        // if (!file) return res.status(400).send('No image in the request');
-
         // const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
-        // req.body.image = `${basePath}${fileName}`
 
-        const user = new User(req.body)
-        await user.save()
+        // Get the URL of the uploaded image from req.file
+        const imageUrl = req.file.path;
+        // console.log(imageUrl)
+
+        // Upload image to Cloudinary
+        const result = await cloudinary.uploader.upload(imageUrl, {
+            folder: 'Clinic/users',
+            width: 150,
+            crop: "scale"
+        });
+
+        // Create a new user object with the Cloudinary URL
+        let user = new User({
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            password: req.body.password,
+            isAdmin: req.body.isAdmin,
+            image: { public_id: result.public_id, url: result.secure_url }
+        });
+
+        console.log(user)
+        user = await user.save();
         return res.status(201).json({
             success: true,
             message: 'User Registered Successfully',
             user
         })
+
     } catch (error) {
         console.log(error)
         res.status(500).json({
@@ -137,15 +177,7 @@ app.get('/get-current-user', async (req, res) => {
 // CreateService //
 ///////////////////
 
-const upload = require('./utils/multer')
 const Service = require('./models/service');
-const cloudinary = require('cloudinary');
-
-cloudinary.config({
-    cloud_name: 'ds7jufrxl',
-    api_key: '827497948387292',
-    api_secret: 'qZygsilGaETbzQ5rnN8v-k8Ai4g',
-})
 
 app.post('/create-service', upload.single('image'), async (req, res) => {
     try {
@@ -359,7 +391,7 @@ app.get('/get-user-appointment', async (req, res) => {
         // Find appointments for the specified user
         const appointment = await Appointment.find({ user: user });
         console.log(appointment)
-        
+
         res.status(200).json({ message: "Appointments fetched successfully", appointment });
     } catch (error) {
         console.log('Error on Getting the User Appointment', error.message);
