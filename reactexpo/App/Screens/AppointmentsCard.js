@@ -43,7 +43,7 @@ const AppointmentsCard = ({ appointment }) => {
         }
     };
     return (
-        <View style={{ borderWidth: 1, borderColor: 'gray', padding: 10, marginBottom: 10, borderRadius: 12 }}>
+        <View style={{ borderWidth: 1, borderColor: 'gray', padding: 10, marginBottom: 30, borderRadius: 12 }}>
             <Text style={{ fontWeight: 'bold' }}>Date: {appointment.date} - {appointment.time}</Text>
             <View style={{ flexDirection: 'row' }}>
                 {doctor && doctor.image && doctor.image.length > 0 && (

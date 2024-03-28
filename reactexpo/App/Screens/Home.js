@@ -47,12 +47,13 @@ export default function Home() {
         try {
             if (userId) {
                 const response = await axios.get('http://192.168.100.47:8000/get-current-user', {
-                    // const response = await axios.get('http://192.168.137.190:8000/get-current-user', {
+                    // const response = await axios.get('http://192.168.55.100:8000/get-current-user', {
                     params: {
                         user_id: userId
                     }
                 });
                 setCurrentUser(response.data.user);
+
             }
         } catch (error) {
             console.error('Fetch Services Error:', error.message);
@@ -62,7 +63,7 @@ export default function Home() {
     const fetchServices = async () => {
         try {
             const response = await axios.get('http://192.168.100.47:8000/get-services');
-            // const response = await axios.get('http://192.168.137.190:8000/get-services');
+            // const response = await axios.get('http://192.168.55.100:8000/get-services');
             setServices(response.data.services);
         } catch (error) {
             console.error('Fetch Services Error:', error.message);
@@ -80,9 +81,9 @@ export default function Home() {
                 console.error('Error clearing AsyncStorage:', error);
             });
     }
+    // const imageUrl = currentUser.image;
 
-    // console.log(services)
-
+    console.log(currentUser)
     return (
         <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 40 : 0, }} >
             {isSignedIn && <Header />}
@@ -95,16 +96,20 @@ export default function Home() {
                         alignItems: 'center'
                     }}>
                         <View style={{ flexDirection: 'row' }} >
-                            <FontAwesome name="user-circle-o" size={40} color="black" />
+                            {currentUser && currentUser.image && currentUser.image.length > 0 && (
+                                <Image source={{ uri: currentUser.image[0].url }} style={{ width: 40, height: 40, borderRadius:20 }} />
+                            )}
                             <View style={{ marginLeft: 5 }}>
                                 <Text>Hello, 👋</Text>
                                 {currentUser && (
-                                    <Text style={{
-                                        fontSize: 15,
-                                        fontWeight: 'bold',
-                                    }}>
-                                        {currentUser.name}
-                                    </Text>
+                                    <>
+                                        <Text style={{
+                                            fontSize: 15,
+                                            fontWeight: 'bold',
+                                        }}>
+                                            {currentUser.name}
+                                        </Text>
+                                    </>
                                 )}
                             </View>
                         </View>

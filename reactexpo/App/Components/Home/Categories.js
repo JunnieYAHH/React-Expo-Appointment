@@ -15,7 +15,7 @@ const Categories = () => {
   const fetchServices = async () => {
     try {
       // const response = await axios.get('http://192.168.137.190:8000/get-services');
-      const response = await axios.get('http://192.168.100.47:8000/get-services');
+      const response = await axios.get('http://192.168.55.100:8000/get-services');
       // const response = await axios.get('http://192.168.137.222:8000/get-services');
       setServices(response.data.services);
     } catch (error) {
