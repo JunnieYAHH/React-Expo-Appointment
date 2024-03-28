@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode';
 import AppointmentsCard from './AppointmentsCard';
 import BookAppointment from './BookAppointment';
+import baseURL from '../../assets/common/baseURL';
 
 export default function Appointment() {
 
@@ -40,7 +41,7 @@ export default function Appointment() {
           const decodedToken = jwtDecode(token);
           const userId = decodedToken.userId
           setUserId(userId)
-          const response = await axios.get('http://192.168.100.47:8000/get-current-user', {
+          const response = await axios.get(`${baseURL}/get-current-user`, {
             // const response = await axios.get('http://192.168.137.190:8000/get-current-user', {
             params: {
               user_id: userId
@@ -68,7 +69,7 @@ export default function Appointment() {
         user = currentGoogleId;
       }
       // console.log(user)
-      const result = await axios.get('http://192.168.100.47:8000/get-user-appointment', {
+      const result = await axios.get(`${baseURL}/get-user-appointment`, {
         params: {
           user: user
         }

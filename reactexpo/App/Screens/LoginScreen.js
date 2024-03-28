@@ -7,6 +7,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TabNavigation } from '../Navigation/TabNavigation'
 import SignInWithOAuth from '../Components/SignInWithOAuth';
+import baseURL from '../../assets/common/baseURL';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState();
@@ -37,7 +38,7 @@ const LoginScreen = () => {
         axios
             // .post("http://192.168.137.190:8000/login", user)
             // .post("http://192.168.55.100:8000/login", user)
-            .post("http://192.168.100.47:8000/login", user)
+            .post(`${baseURL}/login`, user)
             .then((response) => {
                 // console.log(response);
                 const token = response.data.token;
@@ -53,9 +54,9 @@ const LoginScreen = () => {
         <ScrollView>
 
             <SafeAreaView style={{ flex: 1, alignItems: 'center' }}>
-                <View style={{ marginTop: 5 }}>
+                {/* <View style={{ marginTop: 5 }}>
                     <Image source={walls} style={{ width: 500, height: 500 }} />
-                </View>
+                </View> */}
                 <KeyboardAvoidingView>
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ flexDirection: 'column', alignItems: 'center', gap: 5, paddingVertical: 5, borderRadius: 5, marginTop: 5 }}>

@@ -6,6 +6,7 @@ import Colors from '../../assets/Shared/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import moment from 'moment';
+import baseURL from '../../assets/common/baseURL';
 
 const AppointmentsCard = ({ appointment }) => {
 
@@ -22,7 +23,7 @@ const AppointmentsCard = ({ appointment }) => {
 
     const fetchService = async () => {
         try {
-            const response = await axios.get('http://192.168.55.100:8000/get-service-to-appoint', {
+            const response = await axios.get(`${baseURL}/get-service-to-appoint`, {
                 // const response = await axios.get('http://192.168.137.190:8000/get-service-to-appoint', {
                 params: {
                     serviceId: appointment.service
@@ -36,7 +37,7 @@ const AppointmentsCard = ({ appointment }) => {
 
     const fetchDoctor = async () => {
         try {
-            const response = await axios.get('http://192.168.55.100:8000/get-doctor-to-appoint', {
+            const response = await axios.get(`${baseURL}/get-doctor-to-appoint`, {
                 // const response = await axios.get('http://192.168.137.190:8000/get-doctor-to-appoint', {
                 params: {
                     doctorId: appointment.doctor

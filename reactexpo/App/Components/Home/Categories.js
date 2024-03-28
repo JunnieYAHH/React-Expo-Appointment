@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import Colors from '../../../assets/Shared/Colors';
+import baseURL from '../../../assets/common/baseURL';
 
 const Categories = () => {
   const [services, setServices] = useState([]);
@@ -15,7 +16,7 @@ const Categories = () => {
   const fetchServices = async () => {
     try {
       // const response = await axios.get('http://192.168.137.190:8000/get-services');
-      const response = await axios.get('http://192.168.55.100:8000/get-services');
+      const response = await axios.get(`${baseURL}/get-services`);
       // const response = await axios.get('http://192.168.137.222:8000/get-services');
       setServices(response.data.services);
     } catch (error) {

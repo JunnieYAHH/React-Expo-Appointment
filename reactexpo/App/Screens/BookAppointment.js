@@ -12,6 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import moment from 'moment';
+import baseURL from '../../assets/common/baseURL';
 
 const BookAppointment = () => {
     // console.log('setAppointment prop:', setAppointment);
@@ -48,7 +49,7 @@ const BookAppointment = () => {
                     const decodedToken = jwtDecode(token);
                     const userId = decodedToken.userId
                     setUserId(userId)
-                    const response = await axios.get('http://192.168.100.47:8000/get-current-user', {
+                    const response = await axios.get(`${baseURL}/get-current-user`, {
                         // const response = await axios.get('http://192.168.137.190:8000/get-current-user', {
                         params: {
                             user_id: userId
@@ -61,16 +62,15 @@ const BookAppointment = () => {
             }
             fetchUser();
         }
-    }, [userId]);
-
-    useEffect(() => {
         fetchService();
         fetchDoctor();
-    }, []);
+        getDays()
+        getTime()
+    }, [userId]);
 
     const fetchService = async () => {
         try {
-            const response = await axios.get('http://192.168.100.47:8000/get-service-to-appoint', {
+            const response = await axios.get(`${baseURL}/get-service-to-appoint`, {
                 // const response = await axios.get('http://192.168.137.190:8000/get-service-to-appoint', {
                 params: {
                     serviceId: param.serviceId
@@ -84,8 +84,7 @@ const BookAppointment = () => {
 
     const fetchDoctor = async () => {
         try {
-            const response = await axios.get('http://192.168.100.47:8000/get-doctor-to-appoint', {
-                // const response = await axios.get('http://192.168.137.190:8000/get-doctor-to-appoint', {
+            const response = await axios.get(`${baseURL}/get-doctor-to-appoint`, {
                 params: {
                     doctorId: param.doctorId
                 }
@@ -105,14 +104,6 @@ const BookAppointment = () => {
 
     const averageRating = calculateAverageRating(doctor.review);
 
-    ///////////////////
-    // GET THE DATE //
-    //////////////////
-    useEffect(() => {
-        getDays()
-        getTime()
-    }, [])
-
     const getDays = () => {
         const today = moment();
         const nextSevenDays = [];
@@ -124,7 +115,6 @@ const BookAppointment = () => {
                 formmatedDate: date.format('Do MMM')
             })
         }
-        // console.log(nextSevenDays)
         setNext7days(nextSevenDays)
     }
 
@@ -160,7 +150,7 @@ const BookAppointment = () => {
 
     const bookAppointment = async () => {
         try {
-            let data = {}; // Initialize data outside the if block
+            let data = {};
             if (user) {
                 data = {
                     googleId: currentGoogleId,
@@ -171,7 +161,6 @@ const BookAppointment = () => {
                     doctorId: doctor._id,
                     serviceId: service._id
                 }
-                // console.log('Google User', data)
             } else {
                 data = {
                     userId: userId,
@@ -182,12 +171,8 @@ const BookAppointment = () => {
                     doctorId: doctor._id,
                     serviceId: service._id
                 }
-                // console.log('Application User', data)
             }
-            // console.log(data)
-            // const response = await axios.post('http://192.168.100.47:8000/create-doctor-appointment', data);
-            const response = await axios.post('http://192.168.100.47:8000/create-doctor-appointment', data);
-            // console.log(response.data);
+            const response = await axios.post(`${baseURL}/create-doctor-appointment`, data);
             navigation.navigate('Appointment')
         } catch (error) {
             console.error('Create Appointment:', error.message);

@@ -15,6 +15,7 @@ import Categories from '../Components/Home/Categories';
 // import  from 'jwt-decode';
 import { UserType } from '../../UserContext';
 import { jwtDecode } from 'jwt-decode';
+import baseURL from '../../assets/common/baseURL';
 
 export default function Home() {
     const { isLoaded, signOut } = useAuth();
@@ -24,9 +25,9 @@ export default function Home() {
     const { isSignedIn } = useUser();
     const { userId, setUserId } = useContext(UserType)
 
-    useEffect(() => {
-        fetchServices();
-    }, []);
+    // useEffect(() => {
+    //     fetchServices();
+    // }, []);
 
     if (!isSignedIn) {
         useEffect(() => {
@@ -40,13 +41,14 @@ export default function Home() {
                 fetchCurrentUser(userId); // Fetch user data when userId changes
             }
             fetchUser();
+            fetchServices();
         }, []);
     }
 
     const fetchCurrentUser = async (userId) => {
         try {
             if (userId) {
-                const response = await axios.get('http://192.168.100.47:8000/get-current-user', {
+                const response = await axios.get(`${baseURL}/get-current-user`, {
                     // const response = await axios.get('http://192.168.55.100:8000/get-current-user', {
                     params: {
                         user_id: userId
@@ -62,7 +64,7 @@ export default function Home() {
 
     const fetchServices = async () => {
         try {
-            const response = await axios.get('http://192.168.100.47:8000/get-services');
+            const response = await axios.get(`${baseURL}/get-services`);
             // const response = await axios.get('http://192.168.55.100:8000/get-services');
             setServices(response.data.services);
         } catch (error) {

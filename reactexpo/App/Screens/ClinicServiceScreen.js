@@ -6,13 +6,13 @@ import ClinicDoctorTab from '../Components/ClinicDoctorScreen/ClinicDoctorTab';
 import axios from 'axios';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import baseURL from '../../assets/common/baseURL';
 
 const ClinicServiceScreen = () => {
     const [doctors, setDoctors] = useState([]);
     const navigation = useNavigation();
 
     const param = useRoute().params;
-    // console.log(param.serviceId)
 
     useEffect(() => {
         getAllDoctors();
@@ -20,9 +20,7 @@ const ClinicServiceScreen = () => {
 
     const getAllDoctors = async () => {
         try {
-            const response = await axios.get('http://192.168.100.47:8000/get-doctors', {
-            // const response = await axios.get('http://192.168.137.190:8000/get-doctors', {
-                // const response = await axios.get('http://192.168.137.222:8000/get-doctors', {
+            const response = await axios.get(`${baseURL}/get-doctors`, {
                 params: {
                     serviceId: param.serviceId
                 }
@@ -36,7 +34,6 @@ const ClinicServiceScreen = () => {
 
     return (
         <View style={{ padding: 20, marginTop: 20, backgroundColor: '#FAF9F6' }} >
-            {/* <Text>{param.serviceName}</Text> */}
             <PageHeader title={param.serviceName} />
 
             <ClinicDoctorTab />
