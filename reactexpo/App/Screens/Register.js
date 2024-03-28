@@ -10,6 +10,7 @@ import axios from 'axios';
 const Register = () => {
     const [email, setEmail] = useState();
     const [name, setName] = useState();
+    const [phone, setPhone] = useState();
     const [password, setPassword] = useState();
     const navigation = useNavigation();
 
@@ -17,17 +18,21 @@ const Register = () => {
         const user = {
             name: name,
             email: email,
-            password: password
+            password: password,
+            phone: phone,
         };
 
         //backend send post request 'register'
         axios.post("http://192.168.100.47:8000/register", user)
+        // axios.post("http://192.168.100.47:8000/register", formData, config)
+            // axios.post("http://192.168.137.190:8000/register", user)
             .then((response) => {
-                console.log(response);
+                // console.log(response);
                 Alert.alert("Registered Successfully");
                 setName("");
                 setEmail("");
                 setPassword("");
+                setPhone("");
                 navigation.navigate('LoginScreen')
             })
             .catch((error) => {
@@ -44,6 +49,7 @@ const Register = () => {
                 Alert.alert('Error in Registration', 'Cannot Register');
             });
     }
+
 
     return (
         <ScrollView>
@@ -74,6 +80,14 @@ const Register = () => {
                                 onChangeText={(text) => setEmail(text)}
                                 style={{ fontSize: email ? 12 : 12, color: 'gray', marginVertical: 5, width: 300 }}
                                 placeholder='Enter Your Email' />
+                        </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, backgroundColor: '#D0D0D0', paddingVertical: 5, borderRadius: 5, marginTop: 5 }}>
+                            <Ionicons name="person-sharp" size={24} color="black" style={{ marginLeft: 10 }} />
+                            <TextInput
+                                value={phone}
+                                onChangeText={(text) => setPhone(text)}
+                                style={{ fontSize: name ? 12 : 12, color: 'gray', marginVertical: 5, width: 300 }}
+                                placeholder='Enter Your name' />
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, backgroundColor: '#D0D0D0', paddingVertical: 5, borderRadius: 5, marginTop: 10 }}>
                             <FontAwesome name="lock" size={24} color="black" style={{ marginLeft: 14 }} />

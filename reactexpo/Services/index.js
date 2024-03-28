@@ -50,6 +50,16 @@ app.post("/register", async (req, res) => {
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(req.body.password, salt)
         req.body.password = hashedPassword
+
+
+        // const file = req.file;
+        // const fileName = file.filename;
+
+        // if (!file) return res.status(400).send('No image in the request');
+
+        // const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
+        // req.body.image = `${basePath}${fileName}`
+
         const user = new User(req.body)
         await user.save()
         return res.status(201).json({
@@ -89,8 +99,6 @@ app.post('/login', async (req, res) => {
         if (!user) {
             return res.status(401).json({ message: 'Invalid Email or Password' });
         }
-
-        // Compare hashed passwords
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             return res.status(401).json({ message: 'Invalid Password' });
@@ -124,8 +132,6 @@ app.get('/get-current-user', async (req, res) => {
         res.status(500).json({ message: "Get Current User Error" });
     }
 })
-
-
 
 ///////////////////
 // CreateService //
@@ -174,7 +180,6 @@ app.post('/create-service', upload.single('image'), async (req, res) => {
     }
 });
 
-
 ////////////////////////
 // Fetch All services //
 ////////////////////////
@@ -202,7 +207,7 @@ app.get('/get-service-to-appoint', async (req, res) => {
         if (serviceId) {
             query = { '_id': serviceId };
         }
-        console.log(query);
+        // console.log(query);
         const service = await Service.findOne(query)
 
         res.status(201).json({ message: "Services fetch successfully", service });
@@ -295,3 +300,69 @@ app.get('/get-doctor-to-appoint', async (req, res) => {
         res.status(500).json({ message: "Create Service Error" });
     }
 })
+
+///////////////////////////////
+// Create the Appoint of user//
+///////////////////////////////
+const Appointment = require('./models/appointment')
+
+app.post('/create-doctor-appointment', async (req, res) => {
+    try {
+        const data = req.body;
+        let newAppointment = {}
+        if (req.body.userId) {
+            newAppointment = ({
+                user: req.body.userId,
+                email: req.body.email,
+                date: req.body.date,
+                time: req.body.time,
+                note: req.body.note,
+                doctor: req.body.doctorId,
+                service: req.body.serviceId,
+                status: 'pending'
+            });
+        } else {
+            newAppointment = ({
+                user: req.body.googleId,
+                email: req.body.googleEmail,
+                date: req.body.date,
+                time: req.body.date,
+                note: req.body.note,
+                doctor: req.body.doctorId,
+                service: req.body.serviceId,
+                status: 'pending'
+            });
+        }
+
+        // console.log(newAppointment)
+
+        const appointment = new Appointment(newAppointment)
+
+        await appointment.save()
+        console.log(appointment)
+
+        res.status(200).json({ message: "Appointment created successfully", data: appointment });
+    } catch (error) {
+        console.log('cannot get the data')
+    }
+})
+
+////////////////////////////
+// Get the Appoint of user//
+////////////////////////////
+
+app.get('/get-user-appointment', async (req, res) => {
+    try {
+        const { user } = req.query;
+        console.log('User ID', user);
+
+        // Find appointments for the specified user
+        const appointment = await Appointment.find({ user: user });
+        console.log(appointment)
+        
+        res.status(200).json({ message: "Appointments fetched successfully", appointment });
+    } catch (error) {
+        console.log('Error on Getting the User Appointment', error.message);
+        res.status(500).json({ message: "Error fetching appointments", error: error.message });
+    }
+});

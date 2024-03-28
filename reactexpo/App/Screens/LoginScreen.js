@@ -35,6 +35,7 @@ const LoginScreen = () => {
         };
 
         axios
+            // .post("http://192.168.137.190:8000/login", user)
             .post("http://192.168.100.47:8000/login", user)
             .then((response) => {
                 // console.log(response);
@@ -46,30 +47,6 @@ const LoginScreen = () => {
                 console.log(error.message);
             })
     }
-
-
-
-    // const handleSubmit = () => {
-    //     const user = {
-    //         email,
-    //         password,
-    //     };
-
-    //     if (email === "" || password === "") {
-    //         setError("Please fill in your credentials");
-    //     } else {
-    //         loginUser(user, context.dispatch);
-    //         // console.log("error")
-    //     }
-    // };
-    // AsyncStorage.getAllKeys((err, keys) => {
-    //     AsyncStorage.multiGet(keys, (error, stores) => {
-    //         stores.map((result, i, store) => {
-    //             console.log({ [store[i][0]]: store[i][1] });
-    //             return true;
-    //         });
-    //     });
-    // });
 
     return (
         <ScrollView>

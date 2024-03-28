@@ -2,25 +2,36 @@ const mongoose = require('mongoose');
 
 const appointmentSchema = new mongoose.Schema({
 
+    user: {
+        type: String,
+        ref: 'user'
+    },
     email: {
         type: String,
         required: [true, "Donor Email is Required"]
     },
-    service: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "service"
+    date: {
+        type: Date,
+        required: [true, "You need date to appoint"]
     },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user",
+    time: {
+        type: String,
+        required: [true, "You need the appointment time"]
+    },
+    note: {
+        type: String,
     },
     doctor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "doctor",
     },
+    service: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "service"
+    },
     status: {
         type: String,
-        defaultValue: 'pending',
+        default: 'pending',
     }
 }, { timestamps: true });
 

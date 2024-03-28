@@ -28,7 +28,7 @@ export default function Home() {
         fetchServices();
     }, []);
 
-    if(!isSignedIn){
+    if (!isSignedIn) {
         useEffect(() => {
             const fetchUser = async () => {
                 const token = await AsyncStorage.getItem("authToken")
@@ -47,6 +47,7 @@ export default function Home() {
         try {
             if (userId) {
                 const response = await axios.get('http://192.168.100.47:8000/get-current-user', {
+                    // const response = await axios.get('http://192.168.137.190:8000/get-current-user', {
                     params: {
                         user_id: userId
                     }
@@ -61,6 +62,7 @@ export default function Home() {
     const fetchServices = async () => {
         try {
             const response = await axios.get('http://192.168.100.47:8000/get-services');
+            // const response = await axios.get('http://192.168.137.190:8000/get-services');
             setServices(response.data.services);
         } catch (error) {
             console.error('Fetch Services Error:', error.message);
@@ -94,7 +96,7 @@ export default function Home() {
                     }}>
                         <View style={{ flexDirection: 'row' }} >
                             <FontAwesome name="user-circle-o" size={40} color="black" />
-                            <View>
+                            <View style={{ marginLeft: 5 }}>
                                 <Text>Hello, 👋</Text>
                                 {currentUser && (
                                     <Text style={{
@@ -109,7 +111,7 @@ export default function Home() {
                         <Ionicons name="notifications-outline"
                             size={28}
                             color="black"
-                            style={{ flexDirection: 'column', marginLeft: 50 }} />
+                            style={{ flexDirection: 'column', marginLeft: 165 }} />
                         <Button
                             title='SignOut'
                             onPress={handleLogout}

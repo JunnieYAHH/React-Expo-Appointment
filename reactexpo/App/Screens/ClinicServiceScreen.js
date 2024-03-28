@@ -21,6 +21,7 @@ const ClinicServiceScreen = () => {
     const getAllDoctors = async () => {
         try {
             const response = await axios.get('http://192.168.100.47:8000/get-doctors', {
+            // const response = await axios.get('http://192.168.137.190:8000/get-doctors', {
                 // const response = await axios.get('http://192.168.137.222:8000/get-doctors', {
                 params: {
                     serviceId: param.serviceId
@@ -31,15 +32,8 @@ const ClinicServiceScreen = () => {
             console.error('Fetch All Doctors Error:', error);
         }
     };
-    // console.log('This is the serviceId', param.serviceId)
-    // console.log('This is all', doctors)
+    console.log(doctors)
 
-    const calculateAverageRating = (reviews) => {
-        if (!reviews || reviews.length === 0) return 0;
-
-        const totalRating = reviews.reduce((acc, curr) => acc + curr.rating, 0);
-        return totalRating / reviews.length;
-    };
     return (
         <View style={{ padding: 20, marginTop: 20, backgroundColor: '#FAF9F6' }} >
             {/* <Text>{param.serviceName}</Text> */}
@@ -47,9 +41,7 @@ const ClinicServiceScreen = () => {
 
             <ClinicDoctorTab />
             <View style={{ marginTop: 25 }}>
-                {doctors.map((doctor, index) => {
-                    const averageRating = calculateAverageRating(doctor.review);
-                    console.log(doctor._id)
+                {doctors.map((doctor) => {
                     return (
                         <View key={doctor._id} style={{ marginBottom: 10, padding: 15, backgroundColor: '#FFFFFF', borderRadius: 20 }}>
                             <View style={{ flexDirection: 'row', padding: 15 }}>
@@ -72,27 +64,7 @@ const ClinicServiceScreen = () => {
                                             <Ionicons name="female" size={15} style={{ marginLeft: 5 }} color="#FF00FF" />
                                         ) : null}
                                     </View>
-                                    {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 3 }}>
-                                        <MaterialCommunityIcons name="email-fast" size={12} color="black" />
-                                        <Text style={{ marginLeft: 5 }}>{doctor.email}</Text>
-                                    </View> */}
                                     <Text style={{ marginTop: 8, color: 'gray' }} >{param.serviceName}</Text>
-                                    {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                                        {[1, 2, 3, 4, 5].map((star, index) => (
-                                            <View>
-                                                <MaterialCommunityIcons
-                                                    key={index}
-                                                    name={star <= calculateAverageRating(doctor.review) ? 'star' : 'star-outline'}
-                                                    size={20}
-                                                    color="#FFD700"
-                                                />
-
-                                            </View>
-                                        ))}
-                                        <Text style={{ fontWeight: 'bold' }}>{averageRating.toFixed(1)}</Text>
-                                        <Text style={{ marginLeft: 10 }}>||</Text>
-                                        <Text style={{ marginLeft: 10 }}>{doctor.review.length} reviews</Text>
-                                    </View> */}
                                 </View>
                             </View>
                             <TouchableOpacity
