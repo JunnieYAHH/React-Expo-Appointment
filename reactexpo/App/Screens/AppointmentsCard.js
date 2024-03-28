@@ -23,7 +23,7 @@ const AppointmentsCard = ({ appointment }) => {
 
     const fetchService = async () => {
         try {
-            const response = await axios.get(`${baseURL}/get-service-to-appoint`, {
+            const response = await axios.get(`${baseURL}/services/get-service-to-appoint`, {
                 // const response = await axios.get('http://192.168.137.190:8000/get-service-to-appoint', {
                 params: {
                     serviceId: appointment.service
@@ -37,7 +37,7 @@ const AppointmentsCard = ({ appointment }) => {
 
     const fetchDoctor = async () => {
         try {
-            const response = await axios.get(`${baseURL}/get-doctor-to-appoint`, {
+            const response = await axios.get(`${baseURL}/doctors/get-doctor-to-appoint`, {
                 // const response = await axios.get('http://192.168.137.190:8000/get-doctor-to-appoint', {
                 params: {
                     doctorId: appointment.doctor

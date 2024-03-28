@@ -24,7 +24,6 @@ export default function Appointment() {
   const { userId, setUserId } = useContext(UserType)
   const [appointment, setAppointment] = useState([])
 
-  // console.log(appointment)
 
   useEffect(() => {
     if (user) {
@@ -41,8 +40,7 @@ export default function Appointment() {
           const decodedToken = jwtDecode(token);
           const userId = decodedToken.userId
           setUserId(userId)
-          const response = await axios.get(`${baseURL}/get-current-user`, {
-            // const response = await axios.get('http://192.168.137.190:8000/get-current-user', {
+          const response = await axios.get(`${baseURL}/users/get-current-user`, {
             params: {
               user_id: userId
             }
@@ -68,17 +66,14 @@ export default function Appointment() {
       } else {
         user = currentGoogleId;
       }
-      // console.log(user)
-      const result = await axios.get(`${baseURL}/get-user-appointment`, {
+      const result = await axios.get(`${baseURL}/appointments/get-user-appointment`, {
         params: {
           user: user
         }
       });
 
-      // console.log(result.data);
       setAppointment(result.data.appointment)
 
-      // setAppointment(prevAppointments => [...prevAppointments, result.data.appointment]);
     } catch (error) {
       console.log('Error in Getting User Appointment', error.message);
     }

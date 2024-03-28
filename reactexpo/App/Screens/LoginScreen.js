@@ -36,11 +36,8 @@ const LoginScreen = () => {
         };
 
         axios
-            // .post("http://192.168.137.190:8000/login", user)
-            // .post("http://192.168.55.100:8000/login", user)
-            .post(`${baseURL}/login`, user)
+            .post(`${baseURL}/users/login`, user)
             .then((response) => {
-                // console.log(response);
                 const token = response.data.token;
                 AsyncStorage.setItem("authToken", token);
                 navigation.replace('TabNavigation')

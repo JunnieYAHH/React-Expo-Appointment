@@ -20,7 +20,7 @@ const ClinicServiceScreen = () => {
 
     const getAllDoctors = async () => {
         try {
-            const response = await axios.get(`${baseURL}/get-doctors`, {
+            const response = await axios.get(`${baseURL}/doctors/get-doctors`, {
                 params: {
                     serviceId: param.serviceId
                 }
@@ -30,12 +30,11 @@ const ClinicServiceScreen = () => {
             console.error('Fetch All Doctors Error:', error);
         }
     };
-    console.log(doctors)
+    // console.log(doctors)
 
     return (
         <View style={{ padding: 20, marginTop: 20, backgroundColor: '#FAF9F6' }} >
             <PageHeader title={param.serviceName} />
-
             <ClinicDoctorTab />
             <View style={{ marginTop: 25 }}>
                 {doctors.map((doctor) => {

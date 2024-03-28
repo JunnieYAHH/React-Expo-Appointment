@@ -11,8 +11,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import Categories from '../Components/Home/Categories';
-// import jwt_decode from 'jwt-decode';
-// import  from 'jwt-decode';
 import { UserType } from '../../UserContext';
 import { jwtDecode } from 'jwt-decode';
 import baseURL from '../../assets/common/baseURL';
@@ -25,20 +23,14 @@ export default function Home() {
     const { isSignedIn } = useUser();
     const { userId, setUserId } = useContext(UserType)
 
-    // useEffect(() => {
-    //     fetchServices();
-    // }, []);
-
     if (!isSignedIn) {
         useEffect(() => {
             const fetchUser = async () => {
                 const token = await AsyncStorage.getItem("authToken")
-                // console.log('Token',token)
                 const decodedToken = jwtDecode(token);
-                // console.log("Decoded Token:", decodedToken);
                 const userId = decodedToken.userId
                 setUserId(userId)
-                fetchCurrentUser(userId); // Fetch user data when userId changes
+                fetchCurrentUser(userId);
             }
             fetchUser();
             fetchServices();
@@ -48,8 +40,7 @@ export default function Home() {
     const fetchCurrentUser = async (userId) => {
         try {
             if (userId) {
-                const response = await axios.get(`${baseURL}/get-current-user`, {
-                    // const response = await axios.get('http://192.168.55.100:8000/get-current-user', {
+                const response = await axios.get(`${baseURL}/users/get-current-user`, {
                     params: {
                         user_id: userId
                     }
@@ -64,8 +55,7 @@ export default function Home() {
 
     const fetchServices = async () => {
         try {
-            const response = await axios.get(`${baseURL}/get-services`);
-            // const response = await axios.get('http://192.168.55.100:8000/get-services');
+            const response = await axios.get(`${baseURL}/services/get-services`);
             setServices(response.data.services);
         } catch (error) {
             console.error('Fetch Services Error:', error.message);

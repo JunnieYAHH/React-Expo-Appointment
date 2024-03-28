@@ -15,9 +15,7 @@ const Categories = () => {
 
   const fetchServices = async () => {
     try {
-      // const response = await axios.get('http://192.168.137.190:8000/get-services');
-      const response = await axios.get(`${baseURL}/get-services`);
-      // const response = await axios.get('http://192.168.137.222:8000/get-services');
+      const response = await axios.get(`${baseURL}/services/get-services`);
       setServices(response.data.services);
     } catch (error) {
       console.error('Fetch Services Error:', error);
@@ -45,9 +43,6 @@ const Categories = () => {
             >
               <View key={item._id} style={{ padding: 15, borderRadius: 99, alignItems: 'center' }}>
                 <Image source={{ uri: item.image[0].url }} style={{ width: 30, height: 30 }} />
-                {/* <Text>{item.name}</Text>
-            <Text>Doctor: {item.doctor}</Text>
-            <Text>Description: {item.description}</Text> */}
               </View>
               <Text>{item.name}</Text>
             </TouchableOpacity>

@@ -3,17 +3,13 @@ import * as WebBrowser from "expo-web-browser";
 import { Button, Dimensions, Text, TouchableOpacity } from "react-native";
 import { useOAuth } from "@clerk/clerk-expo";
 import { useWarmUpBrowser } from "../../hooks/useWarmUpBrowser";
-// import { useNavigation } from '@react-navigation/native';
 import Colors from "../../assets/Shared/Colors";
 
 
 WebBrowser.maybeCompleteAuthSession();
 
 const SignInWithOAuth = () => {
-  // Warm up the android browser to improve UX
-  // https://docs.expo.dev/guides/authentication/#improving-user-experience
   useWarmUpBrowser();
-  // const navigation = useNavigation(); // Get navigation object
 
   const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
 
@@ -24,10 +20,7 @@ const SignInWithOAuth = () => {
 
       if (createdSessionId) {
         setActive({ session: createdSessionId });
-        // navigation.navigate('TabNavigation');
-
       } else {
-        // Use signIn or signUp for next steps such as MFA
       }
     } catch (err) {
       console.error("OAuth error", err);

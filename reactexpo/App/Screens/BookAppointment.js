@@ -49,7 +49,7 @@ const BookAppointment = () => {
                     const decodedToken = jwtDecode(token);
                     const userId = decodedToken.userId
                     setUserId(userId)
-                    const response = await axios.get(`${baseURL}/get-current-user`, {
+                    const response = await axios.get(`${baseURL}/users/get-current-user`, {
                         // const response = await axios.get('http://192.168.137.190:8000/get-current-user', {
                         params: {
                             user_id: userId
@@ -70,7 +70,7 @@ const BookAppointment = () => {
 
     const fetchService = async () => {
         try {
-            const response = await axios.get(`${baseURL}/get-service-to-appoint`, {
+            const response = await axios.get(`${baseURL}/services/get-service-to-appoint`, {
                 // const response = await axios.get('http://192.168.137.190:8000/get-service-to-appoint', {
                 params: {
                     serviceId: param.serviceId
@@ -84,7 +84,7 @@ const BookAppointment = () => {
 
     const fetchDoctor = async () => {
         try {
-            const response = await axios.get(`${baseURL}/get-doctor-to-appoint`, {
+            const response = await axios.get(`${baseURL}/doctors/get-doctor-to-appoint`, {
                 params: {
                     doctorId: param.doctorId
                 }
@@ -172,7 +172,7 @@ const BookAppointment = () => {
                     serviceId: service._id
                 }
             }
-            const response = await axios.post(`${baseURL}/create-doctor-appointment`, data);
+            const response = await axios.post(`${baseURL}/appointments/create-doctor-appointment`, data);
             navigation.navigate('Appointment')
         } catch (error) {
             console.error('Create Appointment:', error.message);

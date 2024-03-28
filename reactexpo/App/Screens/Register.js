@@ -13,6 +13,7 @@ import * as ImagePicker from "expo-image-picker"
 import * as Location from 'expo-location';
 import axios from 'axios';
 import FormContainer from '../Components/Shared/FormContainer';
+import baseURL from '../../assets/common/baseURL';
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -37,10 +38,7 @@ const Register = () => {
                 aspect: [4, 3],
                 quality: 1,
             });
-            console.log(result)
-
-            // setImage(data.uri);
-            // setMainImage(data.uri)
+            // console.log(result)
             if (!result.canceled) {
                 console.log(result.assets)
                 setMainImage(result.assets[0].uri);
@@ -50,8 +48,6 @@ const Register = () => {
             }
         }
     };
-    // console.log(image)
-
     const handleRegister = () => {
         if (email === "" || name === "" || phone === "" || password === "") {
             setError("Please fill in the form correctly");
@@ -78,19 +74,10 @@ const Register = () => {
             }
         }
 
-        //backend send post request 'register'
-        axios.post("http://192.168.100.47:8000/register", formData, config)
-        // axios.post("http://192.168.55.100:8000/register", formData, config)
-            // axios.post("http://192.168.100.47:8000/register", formData, config)
-            // axios.post("http://192.168.137.190:8000/register", user)
+        axios.post(`${baseURL}/users/register`, formData, config)
             .then((response) => {
                 console.log(response);
-                // console.log(response);
                 Alert.alert("Registered Successfully");
-                // setName("");
-                // setEmail("");
-                // setPassword("");
-                // setPhone("");
                 navigation.navigate('LoginScreen')
 
             })
