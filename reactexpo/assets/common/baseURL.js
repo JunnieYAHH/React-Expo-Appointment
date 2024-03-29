@@ -4,8 +4,12 @@ import { Platform } from 'react-native'
 let baseURL = '';
 
 {Platform.OS == 'android'
-? baseURL = 'http://192.168.0.189:8000/api/v1'
-: baseURL = 'http://192.168.0.189:8000/api/v1'
+// ? baseURL = 'http://192.168.0.189:8000/api/v1'
+// : baseURL = 'http://192.168.0.189:8000/api/v1'
+
+? baseURL = 'http://192.168.55.100:8000/api/v1'
+: baseURL = 'http://192.168.55.100:8000/api/v1'
+
 }
 
 export default baseURL;
