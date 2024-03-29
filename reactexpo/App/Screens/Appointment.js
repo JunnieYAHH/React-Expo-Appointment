@@ -159,9 +159,9 @@ export default function Appointment() {
           <FlatList
             data={sortedAppointments.filter(item => item.status === 'pending')}
             renderItem={({ item }) => {
+              console.log('The doctor', doctors)
               const service = services.find(service => service._id === item.service);
               const doctor = doctors.find(doctor => doctor._id === item.doctor);
-              // console.log('The doctor', doctor)
               if (!doctor) {
                 return null
               }
@@ -205,7 +205,7 @@ export default function Appointment() {
           <FlatList
             data={sortedAppointments.filter(item => item.status === 'completed')}
             renderItem={({ item }) => {
-              // console.log('The doctor', doctors)
+              console.log('The doctor', doctors)
               const service = services.find(service => service._id === item.service);
               const doctor = doctors.find(doctor => doctor._id === item.doctor);
 
