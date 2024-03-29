@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import PageHeader from '../Components/Shared/PageHeader';
@@ -14,9 +14,6 @@ const ClinicServiceScreen = () => {
 
     const param = useRoute().params;
 
-    useEffect(() => {
-        getAllDoctors();
-    }, [param.serviceId]);
 
     const getAllDoctors = async () => {
         try {
@@ -32,12 +29,61 @@ const ClinicServiceScreen = () => {
     };
     // console.log(doctors)
 
+    useEffect(() => {
+        getAllDoctors();
+    }, [param.serviceId]);
+
+    console.log(doctors)
+
     return (
         <View style={{ padding: 20, marginTop: 20, backgroundColor: '#FAF9F6' }} >
             <PageHeader title={param.serviceName} />
             <ClinicDoctorTab />
             <View style={{ marginTop: 25 }}>
-                {doctors.map((doctor) => {
+                <FlatList
+                    data={doctors}
+                    renderItem={({ item }) => (
+                        <>
+                            <View key={item._id} style={{ marginBottom: 10, padding: 15, backgroundColor: '#FFFFFF', borderRadius: 20 }}>
+                                <View style={{ flexDirection: 'row', padding: 15 }}>
+                                    {item.image && item.image.length > 0 && (
+                                        <Image
+                                            source={{ uri: item.image[0].url }}
+                                            style={{ width: 100, height: 125, borderRadius: 10 }}
+                                        />
+                                    )}
+                                    <View style={{ padding: 10 }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#87CEEB', padding: 5, borderRadius: 10, width: 140 }} >
+                                            <MaterialCommunityIcons name="check-decagram" size={10} color="blue" />
+                                            <Text style={{ color: 'blue' }} > Proffesional Doctor</Text>
+                                        </View>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', marginTop: 5 }} >
+                                            <Text style={{ fontSize: 17 }} >Dr. {item.name}</Text>
+                                            {item.gender === 'male' ? (
+                                                <Ionicons name="male" size={15} style={{ marginLeft: 5 }} color="blue" />
+                                            ) : item.gender === 'female' ? (
+                                                <Ionicons name="female" size={15} style={{ marginLeft: 5 }} color="#FF00FF" />
+                                            ) : null}
+                                        </View>
+                                        <Text style={{ marginTop: 8, color: 'gray' }} >{param.serviceName}</Text>
+                                    </View>
+                                </View>
+                                <TouchableOpacity
+                                    onPress={() => navigation.navigate('book-appointment-now', {
+                                        doctorId: item._id,
+                                        serviceId: param.serviceId
+                                    })}
+                                    style={{ backgroundColor: '#87CEEB', padding: 10, borderRadius: 60 }} >
+                                    <View style={{ alignItems: 'center' }}>
+                                        <Text style={{ color: 'blue', fontFamily: 'System', fontSize: 16 }}> Check Doctor </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        </>
+                    )}
+                />
+
+                {/* {doctors.map((doctor) => {
                     return (
                         <View key={doctor._id} style={{ marginBottom: 10, padding: 15, backgroundColor: '#FFFFFF', borderRadius: 20 }}>
                             <View style={{ flexDirection: 'row', padding: 15 }}>
@@ -75,7 +121,7 @@ const ClinicServiceScreen = () => {
                             </TouchableOpacity>
                         </View>
                     )
-                })}
+                })} */}
             </View>
         </View>
     )

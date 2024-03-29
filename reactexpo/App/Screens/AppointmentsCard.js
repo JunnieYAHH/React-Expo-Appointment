@@ -48,9 +48,10 @@ const AppointmentsCard = ({ appointment }) => {
             console.error('Fetch Services Error:', error.message);
         }
     };
+    console.log('this is the appointment', appointment)
     return (
-        <View style={{ borderWidth: 1,  padding: 10, marginBottom: 10, borderRadius: 12 ,borderColor:Colors.LIGHT_GRAY,backgroundColor:Colors.white, marginTop: 15}}>
-            <Text style={{ fontWeight: 'bold', fontSize:18, fontFamily: 'sans-serif' }}>{moment(appointment.date).format('MMM Do, YYYY')} - {appointment.time}</Text>
+        <View style={{ borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, marginTop: 15 }}>
+            <Text style={{ fontWeight: 'bold', fontSize: 18, fontFamily: 'sans-serif' }}>{moment(appointment.date).format('MMM Do, YYYY')} - {appointment.time}</Text>
             <View style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -63,28 +64,24 @@ const AppointmentsCard = ({ appointment }) => {
                     />)}
 
                 <View>
-                <Text style={{ fontSize: 20, fontWeight: 'bold', fontFamily: 'sans-serif' }}>{service.name}</Text>
-                    <View style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center'}}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', fontFamily: 'sans-serif' }}>{service.name}</Text>
+                    <View style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center' }}>
                         <FontAwesome6 name="user-doctor" size={17} color="blue" />
                         <Text style={{ fontSize: 15, fontFamily: 'sans-serif' }}>{doctor.name}</Text>
-                    
+
                     </View>
 
-                    <View style={{ display: 'flex', flexDirection: 'row', gap: 3, alignItems: 'center' , marginTop:5}}>
+                    <View style={{ display: 'flex', flexDirection: 'row', gap: 3, alignItems: 'center', marginTop: 5 }}>
                         <FontAwesome5 name="file-medical-alt" size={17} color="blue" />
-                        <Text style={{ fontSize: 15, fontFamily: 'sans-serif'}}>Id: #{appointment.service}</Text>
+                        <Text style={{ fontSize: 15, fontFamily: 'sans-serif' }}>Id: #{appointment.service}</Text>
                     </View>
-                    <View style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center',marginTop:5 }}>
-                       <Ionicons name="document-text" size={17} color="blue" />
-                        <Text style={{ fontWeight: 'bold', fontFamily: 'sans-serif'}}>Status: {appointment.status}</Text>
+                    <View style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center', marginTop: 5 }}>
+                        <Ionicons name="document-text" size={17} color="blue" />
+                        <Text style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}>Status: {appointment.status}</Text>
                     </View>
                 </View>
             </View>
-
-
         </View>
-
-
     );
 };
 

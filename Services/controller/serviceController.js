@@ -43,7 +43,7 @@ const serviceController = {
     getServices: async (req, res) => {
         try {
             const services = await Service.find()
-
+            console.log(services)
             res.status(201).json({ message: "Services fetch successfully", services });
         } catch (error) {
             console.error("Fetch Service Error:", error);
@@ -66,7 +66,7 @@ const serviceController = {
             res.status(500).json({ message: "Create Service Error" });
         }
     },
-    
+
 };
 
 module.exports = serviceController;

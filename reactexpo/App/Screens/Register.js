@@ -108,9 +108,9 @@ const Register = () => {
     return (
         <ScrollView>
             <SafeAreaView style={{ flex: 1, alignItems: 'center' }}>
-                {/* <View style={{ marginTop: 5 }}>
+                <View style={{ marginTop: 5 }}>
                     <Image source={walls} style={{ width: 500, height: 500 }} />
-                </View> */}
+                </View>
                 <KeyboardAvoidingView>
                     <FormContainer title={"Register"}>
                         {launchCam ?
