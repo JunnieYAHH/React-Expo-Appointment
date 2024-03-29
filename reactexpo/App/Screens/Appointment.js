@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, KeyboardAvoidingView, TextInput } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useUser } from '@clerk/clerk-expo';
@@ -15,6 +15,8 @@ import { jwtDecode } from 'jwt-decode';
 import AppointmentsCard from './AppointmentsCard';
 import BookAppointment from './BookAppointment';
 import baseURL from '../../assets/common/baseURL';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 export default function Appointment() {
   const [activeIndex, setActiveIndex] = useState(0)
@@ -28,13 +30,19 @@ export default function Appointment() {
   const [doctors, setDoctor] = useState([]);
   const { userId, setUserId } = useContext(UserType);
   const [appointment, setAppointment] = useState([]);
+  const [comment, setComment] = useState([]);
+  const [rating, setRating] = useState(0);
+
+  // console.log('The Doctors', doctors)
+  // console.log('The Appointment', appointment)
 
   useEffect(() => {
     if (user) {
       setGoogleAuthId(user.id);
       setGoogleAuthEmail(user.primaryEmailAddress.emailAddress);
     }
-  }, [user, currentGoogleId]);
+    getUserAppointment(userId, currentGoogleId);
+  }, [user, currentGoogleId, appointment]);
 
   useEffect(() => {
     if (userId) {
@@ -50,7 +58,6 @@ export default function Appointment() {
             },
           });
           setCurrentUser(response.data.user);
-          getUserAppointment(userId, currentGoogleId);
         } catch (error) {
           console.error('Fetch User Error:', error.message);
         }
@@ -62,7 +69,7 @@ export default function Appointment() {
   useEffect(() => {
     fetchService();
     fetchDoctor();
-  }, [appointment]); // Run when appointment changes
+  }, [appointment]);
 
   const getUserAppointment = async (userId, currentGoogleId) => {
     try {
@@ -77,10 +84,8 @@ export default function Appointment() {
           user: user,
         },
       });
-      // console.log('RESULT IN THE CONTROLLER',result)
-
+      // console.log('RESULT IN THE CONTROLLER',result.data.appointment)
       setAppointment(result.data.appointment);
-
     } catch (error) {
       console.log('Error in Getting User Appointment', error.message);
     }
@@ -107,52 +112,36 @@ export default function Appointment() {
   };
   const sortedAppointments = appointment.sort((a, b) => new Date(a.date) - new Date(b.date));
 
+  const handleStarPress = (ratingValue) => {
+    setRating(ratingValue);
+  };
+
+  const renderStars = () => {
+    const stars = [];
+    const starSize = 30; // Adjust the size as per your preference
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <TouchableOpacity key={i} onPress={() => handleStarPress(i)}>
+          <Text style={{ fontSize: starSize, margin: 5, color: '#FFD700', fontWeight: '900' }}>{rating >= i ? '★' : '☆'}</Text>
+
+        </TouchableOpacity>
+      );
+    }
+    return stars;
+  };
+  // console.log(appointment)
+
+  const calculateAverageRating = (reviews) => {
+    if (!reviews || reviews.length === 0) return 0;
+
+    const totalRating = reviews.reduce((acc, curr) => acc + curr.rating, 0);
+    return totalRating / reviews.length;
+  };
 
   return (
     <View style={{ padding: 10, marginTop: 40 }}>
       <PageHeader title={'Account Appointment'} />
 
-      {/* <FlatList
-        data={sortedAppointments}
-        renderItem={({ item }) => {
-          const service = services.find(service => service._id === item.service);
-          const doctor = doctors.find(doctor => doctor._id === item.doctor);
-          // console.log(item)
-          return (
-            <View style={{ borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, marginTop: 15 }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 18, fontFamily: 'sans-serif' }}>{moment(item.date).format('MMM Do, YYYY')} - {item.time}</Text>
-              <View style={{
-                display: 'flex',
-                flexDirection: 'row',
-                gap: 10, alignItems: 'center'
-              }}>
-                {doctor && doctor.image && doctor.image.length > 0 && (
-                  <Image
-                    source={{ uri: doctor.image[0].url }}
-                    style={{ width: 90, height: 100, borderRadius: 10 }}
-                  />)}
-
-                <View>
-                  <Text style={{ fontSize: 20, fontWeight: 'bold', fontFamily: 'sans-serif' }}>{service.name}</Text>
-                  <View style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-                    <FontAwesome6 name="user-doctor" size={17} color="blue" />
-                    <Text style={{ fontSize: 15, fontFamily: 'sans-serif' }}>{doctor.name}</Text>
-                  </View>
-
-                  <View style={{ display: 'flex', flexDirection: 'row', gap: 3, alignItems: 'center', marginTop: 5 }}>
-                    <FontAwesome5 name="file-medical-alt" size={17} color="blue" />
-                    <Text style={{ fontSize: 15, fontFamily: 'sans-serif' }}>Id: #{item.service}</Text>
-                  </View>
-                  <View style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center', marginTop: 5 }}>
-                    <Ionicons name="document-text" size={17} color="blue" />
-                    <Text style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}>Status: {item.status}</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          );
-        }}
-      /> */}
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginTop: 20 }}>
         <TouchableOpacity
           style={[activeIndex == 0 ? styles.activeTab : styles.inActiveTab]}
@@ -172,6 +161,10 @@ export default function Appointment() {
             renderItem={({ item }) => {
               const service = services.find(service => service._id === item.service);
               const doctor = doctors.find(doctor => doctor._id === item.doctor);
+              // console.log('The doctor', doctor)
+              if (!doctor) {
+                return null
+              }
               return (
                 <View style={{ borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, marginTop: 15 }}>
                   <Text style={{ fontWeight: 'bold', fontSize: 18, fontFamily: 'sans-serif' }}>{moment(item.date).format('MMM Do, YYYY')} - {item.time}</Text>
@@ -212,8 +205,15 @@ export default function Appointment() {
           <FlatList
             data={sortedAppointments.filter(item => item.status === 'completed')}
             renderItem={({ item }) => {
+              // console.log('The doctor', doctors)
               const service = services.find(service => service._id === item.service);
               const doctor = doctors.find(doctor => doctor._id === item.doctor);
+
+              if (!doctor) {
+                return null
+              }
+              const averageRating = calculateAverageRating(doctor.review);
+
               return (
                 <View style={{ borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, marginTop: 15 }}>
                   <Text style={{ fontWeight: 'bold', fontSize: 18, fontFamily: 'sans-serif' }}>{moment(item.date).format('MMM Do, YYYY')} - {item.time}</Text>
@@ -244,6 +244,33 @@ export default function Appointment() {
                         <Text style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}>Status: {item.status}</Text>
                       </View>
                     </View>
+                    <View>
+                      {[1, 2, 3, 4, 5].map((star, index) => (
+                        <View key={index}>
+                          <MaterialCommunityIcons
+                            key={index}
+                            name={star <= calculateAverageRating(doctor.review) ? 'star' : 'star-outline'}
+                            size={20}
+                            color="#FFD700"
+                          />
+                        </View>
+                      ))}
+                      <Text style={{ fontWeight: 'bold', marginTop: 5 }}>{averageRating.toFixed(1)}</Text>
+                    </View>
+                  </View>
+                  <View style={{ alignItems: 'center', marginTop: 10 }}>
+                    <Text>Review</Text>
+                    <KeyboardAvoidingView>
+                      <TextInput
+                        // numberOfLines={3}
+                        onChangeText={(value) => setComment(value)}
+                        style={{ backgroundColor: '#E5E4E2', padding: 5, borderRadius: 10, color: 'gray', marginTop: 10, width: 300 }}
+                      />
+                    </KeyboardAvoidingView>
+                    <Text>{renderStars()}</Text>
+                    <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, borderRadius: 10, }} >
+                      <Text style={{ color: 'white', fontFamily: 'System', fontSize: 16 }}>Submit</Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
               );
