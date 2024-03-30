@@ -92,7 +92,7 @@ export default function Home() {
                                 <Image source={{ uri: currentUser.image[0].url }} style={{ width: 40, height: 40, borderRadius:20 }} />
                             )}
                             <View style={{ marginLeft: 5 }}>
-                                <Text>Hello, 👋</Text>
+                                <Text>Hello,</Text>
                                 {currentUser && (
                                     <>
                                         <Text style={{
