@@ -1,10 +1,14 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import Colors from "../../assets/Shared/Colors";
+import bg from "../../assets/images/bg.png";
+import prof from "../../assets/images/dentist.jpg";
+import { Entypo } from '@expo/vector-icons';
+import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const Settings = ({ navigation }) => {
+const Profile = () => {
   const navigateToEditProfile = () => {
     navigation.navigate("EditProfile");
   };
@@ -32,15 +36,6 @@ const Settings = ({ navigation }) => {
   const navigateToTermsAndPolicies = () => {
     console.log("Terms and Policies function");
   };
-
-  const navigateToFreeSpace = () => {
-    console.log("Free Space function");
-  };
-
-  const navigateToDateSaver = () => {
-    console.log("Date saver");
-  };
-
   const navigateToReportProblem = () => {
     console.log("Report a problem");
   };
@@ -54,11 +49,6 @@ const Settings = ({ navigation }) => {
   };
 
   const accountItems = [
-    {
-      icon: "person-outline",
-      text: "Edit Profile",
-      action: navigateToEditProfile,
-    },
     { icon: "security", text: "Security", action: navigateToSecurity },
     {
       icon: "notifications-none",
@@ -69,26 +59,12 @@ const Settings = ({ navigation }) => {
   ];
 
   const supportItems = [
-    {
-      icon: "credit-card",
-      text: "My Subscription",
-      action: navigateToSubscription,
-    },
     { icon: "help-outline", text: "Help & Support", action: navigateToSupport },
     {
       icon: "info-outline",
       text: "Terms and Policies",
       action: navigateToTermsAndPolicies,
     },
-  ];
-
-  const cacheAndCellularItems = [
-    {
-      icon: "delete-outline",
-      text: "Free up space",
-      action: navigateToFreeSpace,
-    },
-    { icon: "save-alt", text: "Date Saver", action: navigateToDateSaver },
   ];
 
   const actionsItems = [
@@ -116,7 +92,7 @@ const Settings = ({ navigation }) => {
       <Text
         style={{
           marginLeft: 36,
-          fontfamily: "sans-serif",
+          fontFamily: "sans-serif",
           fontWeight: 600,
           fontSize: 16,
         }}
@@ -127,113 +103,136 @@ const Settings = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: Colors.white,
-      }}
-    >
-      <View
-        style={{
-          marginHorizontal: 12,
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.white }}>
+      <StatusBar backgroundColor={Colors.gray} />
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View>
+          <Image
+            source={bg}
+            resizeMode="cover"
+            style={{
+              height: 228,
+              width: "100%",
+            }}
+          />
+        </View>
+
+        <View style={{ alignItems: "center", marginTop: 20 }}>
+          <Image
+            source={prof}
+            resizeMode="contain"
+            style={{
+              height: 155,
+              width: 155,
+              borderRadius: 999,
+              borderColor: Colors.primaries,
+              borderWidth: 2,
+              marginBottom: 10,
+            }}
+          />
+          <Text
+            style={{
+              fontFamily: "bold",
+              fontSize: 20,
+              color: Colors.primary,
+              marginVertical: 5,
+            }}
+          >
+            Cardo Dalisay
+          </Text>
+          <Text
+            style={{
+              color: Colors.black,
+              fontFamily: "regular",
+              fontSize: 14,
+              lineHeight: 20,
+              marginBottom: 5,
+            }}
+          >
+            Interior Design Ediwow
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: 10,
+            }}
+          >
+            <Entypo name="location" size={24} color="black" />
+            <Text
+              style={{
+                fontFamily: "regular",
+                fontSize: 14,
+                lineHeight: 20,
+                marginLeft: 4,
+              }}
+            >
+              Taguig City
+            </Text>
+          </View>
+        </View>
+
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
+          onPress={navigateToEditProfile}
           style={{
-            position: "absolute",
-            left: 0,
+            width: 124,
+            height: 46,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: Colors.secondaryGray,
+            borderRadius: 10,
+            marginTop: 20,
+            alignSelf: "center",
           }}
         >
-          <MaterialIcons
-            name="keyboard-arrow-left"
-            size={24}
-            color={Colors.black}
-          />
+          <Text
+            style={{
+              fontFamily: "regular",
+              fontSize: 14,
+              color: Colors.black,
+            }}
+          >
+            Edit Profile
+          </Text>
         </TouchableOpacity>
 
-        <Text style={{ fontfamily: "sans-serif" }}>Settings</Text>
-      </View>
-
-      <ScrollView style={{ marginHorizontal: 12 }}>
-        {/* Account Settings */}
-        <View style={{ marginBottom: 12 }}>
-          <Text style={{ fontfamily: "sans-serif", marginVertical: 10 }}>Account</Text>
-          <View
-            style={{
-              borderRadius: 12,
-              backgrounColor: Colors.gray,
-            }}
-          >
-            {accountItems.map((item, index) => (
-              <React.Fragment key={index}>
-                {renderSettingsItem(item)}
-              </React.Fragment>
-            ))}
+        <ScrollView style={{ marginHorizontal: 12 }}>
+          <View style={{ marginTop: 20 }}>
+            <Text style={{ fontFamily: "sans-serif", marginVertical: 10 }}>Account</Text>
+            <View>
+              {accountItems.map((item, index) => (
+                <React.Fragment key={index}>
+                  {renderSettingsItem(item)}
+                </React.Fragment>
+              ))}
+            </View>
           </View>
-        </View>
 
-        {/* Support and About settings */}
-
-        <View style={{ marginBottom: 12 }}>
-          <Text style={{ fontfamily: "sans-serif", marginVertical: 10 }}>
-            Support & About{" "}
-          </Text>
-          <View
-            style={{
-              borderRadius: 12,
-              backgrounColor: Colors.gray,
-            }}
-          >
-            {supportItems.map((item, index) => (
-              <React.Fragment key={index}>
-                {renderSettingsItem(item)}
-              </React.Fragment>
-            ))}
+          <View style={{ marginBottom: 12 }}>
+            <Text style={{ fontFamily: "sans-serif", marginVertical: 10 }}>Support & About</Text>
+            <View>
+              {supportItems.map((item, index) => (
+                <React.Fragment key={index}>
+                  {renderSettingsItem(item)}
+                </React.Fragment>
+              ))}
+            </View>
           </View>
-        </View>
 
-        {/* Cache & Cellular */}
-        <View style={{ marginBottom: 12 }}>
-          <Text style={{ fontfamily: "sans-serif", marginVertical: 10 }}>
-            Cache & Cellular{" "}
-          </Text>
-          <View
-            style={{
-              borderRadius: 12,
-              backgrounColor: Colors.gray,
-            }}
-          >
-            {cacheAndCellularItems.map((item, index) => (
-              <React.Fragment key={index}>
-                {renderSettingsItem(item)}
-              </React.Fragment>
-            ))}
+          <View style={{ marginBottom: 12 }}>
+            <Text style={{ fontFamily: "sans-serif", marginVertical: 10 }}>Actions</Text>
+            <View>
+              {actionsItems.map((item, index) => (
+                <React.Fragment key={index}>
+                  {renderSettingsItem(item)}
+                </React.Fragment>
+              ))}
+            </View>
           </View>
-        </View>
-
-        {/* Actions Settings */}
-
-        <View style={{ marginBottom: 12 }}>
-          <Text style={{ fontfamily: "sans-serif", marginVertical: 10 }}>Actions</Text>
-          <View
-            style={{
-              borderRadius: 12,
-              backgrounColor: Colors.gray,
-            }}
-          >
-            {actionsItems.map((item, index) => (
-              <React.Fragment key={index}>
-                {renderSettingsItem(item)}
-              </React.Fragment>
-            ))}
-          </View>
-        </View>
+        </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Settings;
+export default Profile;
