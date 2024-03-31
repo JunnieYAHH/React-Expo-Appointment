@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, TextInput, KeyboardAvoidingView, ScrollView, Alert } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
@@ -173,7 +173,8 @@ const BookAppointment = () => {
                 }
             }
             const response = await axios.post(`${baseURL}/appointments/create-doctor-appointment`, data);
-            navigation.navigate('Appointment')
+            navigation.navigate('AppointmentScreen')
+            Alert.alert('It is now Appointed')
         } catch (error) {
             console.error('Create Appointment:', error.message);
         }

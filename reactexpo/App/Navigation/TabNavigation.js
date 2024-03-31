@@ -41,7 +41,7 @@ export default function TabNavigation() {
                         )
                     }}
                 />
-                <Tab.Screen name='Admin' component={AdminHomeNavigation}
+                {/* <Tab.Screen name='Admin' component={AdminHomeNavigation}
                     options={{
                         tabBarIcon: ({ color, size }) => (
                             <FontAwesome5 name="user-circle" size={24} color={color} />
@@ -53,7 +53,7 @@ export default function TabNavigation() {
                         tabBarIcon: ({ color, size }) => (
                             <MaterialIcons name="manage-history" size={20} color="gray" />)
                     }}
-                />
+                /> */}
             </Tab.Navigator>
         </SafeAreaView>
     )

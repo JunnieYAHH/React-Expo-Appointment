@@ -169,18 +169,20 @@ const AdminProfile = () => {
         </View>
 
         <View style={{ alignItems: "center", marginTop: 20 }}>
-          <Image
-            source={prof}
-            resizeMode="contain"
-            style={{
-              height: 155,
-              width: 155,
-              borderRadius: 999,
-              borderColor: Colors.primaries,
-              borderWidth: 2,
-              marginBottom: 10,
-            }}
-          />
+          {currentUser && currentUser.image && currentUser.image.length > 0 && (
+            <Image
+              source={{ uri: currentUser.image[0].url }}
+              resizeMode="contain"
+              style={{
+                height: 155,
+                width: 155,
+                borderRadius: 999,
+                borderColor: Colors.primaries,
+                borderWidth: 2,
+                marginBottom: 10,
+              }}
+            />
+          )}
           <Text
             style={{
               fontSize: 20,
@@ -188,7 +190,7 @@ const AdminProfile = () => {
               marginVertical: 5,
             }}
           >
-            Cardo Dalisay
+            {currentUser.name}
           </Text>
           <Text
             style={{

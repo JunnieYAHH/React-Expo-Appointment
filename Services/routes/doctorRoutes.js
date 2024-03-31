@@ -6,6 +6,7 @@ const upload = require('../utils/multer')
 // Define routes related to user operations
 router.post('/create-doctor', upload.single('image'), doctorController.createDoctor);
 router.get('/get-doctors', doctorController.getDoctors);
+router.get('/get-all-doctors', doctorController.getAllDoctors);
 router.get('/get-doctor-to-appoint', doctorController.getDoctorToAppoint);
 router.get('/get-doctor-to-review', doctorController.getDoctorToReview);
 router.put('/create-doctor-review', doctorController.createDoctorReview);

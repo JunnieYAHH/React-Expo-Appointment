@@ -7,6 +7,8 @@ import AdminHomeNavigation from './AdminHomeNavigation';
 import ManageAppointment from '../../Screens/Admin/AdminScreen/Appointment/ManageAppointment';
 import AdminProfile from '../../Screens/Admin/AdminProfile';
 import AdminAppointmentNavigation from './AdminAppointmentNavigation';
+import { FontAwesome } from '@expo/vector-icons';
+
 
 const Tab = createBottomTabNavigator()
 
@@ -27,15 +29,13 @@ const AdminTabNavigation = () => {
                 <Tab.Screen name='Appointment' component={AdminAppointmentNavigation}
                     options={{
                         tabBarIcon: ({ color, size }) => (
-                            <FontAwesome5 name="home" size={20} color={color} />
-                        )
+                            <FontAwesome name="list-alt" size={24} color="black" />)
                     }}
                 />
                 <Tab.Screen name='Profile' component={AdminProfile}
                     options={{
                         tabBarIcon: ({ color, size }) => (
-                            <FontAwesome5 name="home" size={20} color={color} />
-                        )
+                            <MaterialIcons name="admin-panel-settings" size={20} color="black" />)
                     }}
                 />
             </Tab.Navigator>

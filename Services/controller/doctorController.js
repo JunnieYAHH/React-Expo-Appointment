@@ -144,6 +144,15 @@ const doctorController = {
             console.error('Error deleting review:', error);
             res.status(500).json({ message: "Error deleting review", error: error.message });
         }
+    },
+    getAllDoctors: async (req, res) => {
+        try {
+            const doctors = await Doctor.find()
+            return res.status(200).json({ success: true, message: 'doctors fetch successfully', doctors });
+        } catch (error) {
+            console.error('Error Fetching all doctors:', error);
+            res.status(500).json({ message: "Error fetching all doctors", error: error.message });
+        }
     }
 };
 

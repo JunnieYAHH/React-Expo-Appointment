@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const appointmentSchema = new mongoose.Schema({
 
     user: {
-        type: String,
-        ref: 'user'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users'
     },
     email: {
         type: String,
@@ -27,7 +27,7 @@ const appointmentSchema = new mongoose.Schema({
     },
     service: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "service"
+        ref: "service "
     },
     status: {
         type: String,

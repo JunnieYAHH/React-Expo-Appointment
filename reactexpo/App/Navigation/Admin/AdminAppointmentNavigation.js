@@ -6,6 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import ManageAppointment from '../../Screens/Admin/AdminScreen/Appointment/ManageAppointment';
 import PendingAppointments from '../../Screens/Admin/AdminScreen/Appointment/PendingAppointments';
 import { createStackNavigator } from '@react-navigation/stack';
+import ServiceUpdate from '../../Screens/Admin/AdminScreen/Services/ServiceUpdate';
 
 const Stack = createStackNavigator();
 

@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import Colors from '../../../../../assets/Shared/Colors';
 import PageHeader from '../../../../Components/Shared/PageHeader';
 import PendingAppointments from './PendingAppointments';
+import AcceptedAppointment from './AcceptedAppointment';
+import DeclinedAppointment from './DeclinedAppointment';
+import CompletedAppointment from './CompletedAppointment';
 
 const ManageAppointment = () => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -26,23 +29,23 @@ const ManageAppointment = () => {
                 <View>
                     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
                         <DrawerItem label="Pending" index={0} />
-                        <DrawerItem label="Processing" index={1} />
-                        <DrawerItem label="Complete" index={2} />
+                        <DrawerItem label="Accepted" index={1} />
+                        <DrawerItem label="Completed" index={2} />
                         <DrawerItem label="Denied" index={3} />
                     </ScrollView>
                 </View>
-                <View style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ marginTop: 5 }}>
                     {activeIndex === 0 && (
                         <PendingAppointments />
                     )}
                     {activeIndex === 1 && (
-                        <Text>Processing</Text>
+                       <AcceptedAppointment/>
                     )}
                     {activeIndex === 2 && (
-                        <Text>Complete</Text>
+                        <CompletedAppointment/>
                     )}
                     {activeIndex === 3 && (
-                        <Text>Denied</Text>
+                        <DeclinedAppointment/>
                     )}
                 </View>
             </ScrollView>

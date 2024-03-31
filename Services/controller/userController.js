@@ -146,6 +146,16 @@ const userController = {
             res.status(500).json({ message: "Error fetching appointments", error: error.message });
         }
     },
+    getAllUser: async (req, res, next) => {
+        try {
+            const users = await User.find()
+
+            res.status(200).json({ message: "User fetched successfully", users });
+        } catch (error) {
+            console.log('Error on Getting All User ', error.message);
+            res.status(500).json({ message: "Error fetching Users", error: error.message });
+        }
+    }
 };
 
 module.exports = userController;

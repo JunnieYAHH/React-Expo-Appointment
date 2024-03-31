@@ -12,8 +12,8 @@ const sendUserEmail = async options => {
           });
 
         const message = {
-            from: `Clinic <admin@clinic.com>`,
-            to: options.email,
+            from: options.sender,
+            to: options.receiver,
             subject: options.subject,
             html: options.message
         }
