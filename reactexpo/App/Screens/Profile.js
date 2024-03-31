@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../../assets/Shared/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const Settings = ({ navigation }) => {
+const Profile = ({ navigation }) => {
   const navigateToEditProfile = () => {
     navigation.navigate("EditProfile");
   };
@@ -116,7 +116,6 @@ const Settings = ({ navigation }) => {
       <Text
         style={{
           marginLeft: 36,
-          fontfamily: "sans-serif",
           fontWeight: 600,
           fontSize: 16,
         }}
@@ -154,13 +153,13 @@ const Settings = ({ navigation }) => {
           />
         </TouchableOpacity>
 
-        <Text style={{ fontfamily: "sans-serif" }}>Settings</Text>
+        <Text>Settings</Text>
       </View>
 
       <ScrollView style={{ marginHorizontal: 12 }}>
         {/* Account Settings */}
         <View style={{ marginBottom: 12 }}>
-          <Text style={{ fontfamily: "sans-serif", marginVertical: 10 }}>Account</Text>
+          <Text style={{marginVertical: 10 }}>Account</Text>
           <View
             style={{
               borderRadius: 12,
@@ -178,7 +177,7 @@ const Settings = ({ navigation }) => {
         {/* Support and About settings */}
 
         <View style={{ marginBottom: 12 }}>
-          <Text style={{ fontfamily: "sans-serif", marginVertical: 10 }}>
+          <Text style={{marginVertical: 10 }}>
             Support & About{" "}
           </Text>
           <View
@@ -197,7 +196,7 @@ const Settings = ({ navigation }) => {
 
         {/* Cache & Cellular */}
         <View style={{ marginBottom: 12 }}>
-          <Text style={{ fontfamily: "sans-serif", marginVertical: 10 }}>
+          <Text style={{ marginVertical: 10 }}>
             Cache & Cellular{" "}
           </Text>
           <View
@@ -217,7 +216,7 @@ const Settings = ({ navigation }) => {
         {/* Actions Settings */}
 
         <View style={{ marginBottom: 12 }}>
-          <Text style={{ fontfamily: "sans-serif", marginVertical: 10 }}>Actions</Text>
+          <Text style={{ marginVertical: 10 }}>Actions</Text>
           <View
             style={{
               borderRadius: 12,
@@ -236,4 +235,4 @@ const Settings = ({ navigation }) => {
   );
 };
 
-export default Settings;
+export default Profile;

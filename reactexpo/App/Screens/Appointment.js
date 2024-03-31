@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, KeyboardAvoidingView, TextInput } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, KeyboardAvoidingView, TextInput, ScrollView } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useUser } from '@clerk/clerk-expo';
@@ -138,10 +138,11 @@ export default function Appointment() {
     return totalRating / reviews.length;
   };
 
-  return (
-    <View style={{ padding: 10, marginTop: 40 }}>
-      <PageHeader title={'Account Appointment'} />
+  // console.log('The doctor', doctors)
 
+  return (
+    <View style={{ padding: 10, marginTop: 40, flex: 1 }}>
+      <PageHeader title={'Account Appointment'} />
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginTop: 20 }}>
         <TouchableOpacity
           style={[activeIndex == 0 ? styles.activeTab : styles.inActiveTab]}
@@ -157,25 +158,34 @@ export default function Appointment() {
       <View>
         {activeIndex === 0 && (
           <FlatList
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
             data={sortedAppointments.filter(item => item.status === 'pending')}
             renderItem={({ item }) => {
-              console.log('The doctor', doctors)
+              // console.log('The doctor', doctors)
               const service = services.find(service => service._id === item.service);
               const doctor = doctors.find(doctor => doctor._id === item.doctor);
               if (!doctor) {
                 return null
               }
               return (
-                <View style={{ borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, marginTop: 15 }}>
+                <View style={{ borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, marginTop: 100, marginRight: 20, alignItems: 'center' }}>
                   <Text style={{ fontWeight: 'bold', fontSize: 18, fontFamily: 'sans-serif' }}>{moment(item.date).format('MMM Do, YYYY')} - {item.time}</Text>
+                  <View style={{ marginTop: 20 }}>
+                    {doctor && doctor.image && doctor.image.length > 0 && (
+                      <Image
+                        source={{ uri: doctor.image[0].url }}
+                        style={{ width: 150, height: 200, borderRadius: 10 }}
+                      />)}
+                  </View>
                   <View style={{
                     display: 'flex',
                     flexDirection: 'row',
                     gap: 10, alignItems: 'center'
                   }}>
-                    {doctor && doctor.image && doctor.image.length > 0 && (
+                    {service && service.image && service.image.length > 0 && (
                       <Image
-                        source={{ uri: doctor.image[0].url }}
+                        source={{ uri: service.image[0].url }}
                         style={{ width: 90, height: 100, borderRadius: 10 }}
                       />)}
 
@@ -203,9 +213,10 @@ export default function Appointment() {
         )}
         {activeIndex === 1 && (
           <FlatList
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
             data={sortedAppointments.filter(item => item.status === 'completed')}
             renderItem={({ item }) => {
-              console.log('The doctor', doctors)
               const service = services.find(service => service._id === item.service);
               const doctor = doctors.find(doctor => doctor._id === item.doctor);
 
@@ -215,36 +226,45 @@ export default function Appointment() {
               const averageRating = calculateAverageRating(doctor.review);
 
               return (
-                <View style={{ borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, marginTop: 15 }}>
-                  <Text style={{ fontWeight: 'bold', fontSize: 18, fontFamily: 'sans-serif' }}>{moment(item.date).format('MMM Do, YYYY')} - {item.time}</Text>
-                  <View style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    gap: 10, alignItems: 'center'
-                  }}>
-                    {doctor && doctor.image && doctor.image.length > 0 && (
-                      <Image
-                        source={{ uri: doctor.image[0].url }}
-                        style={{ width: 90, height: 100, borderRadius: 10 }}
-                      />)}
-
+                <>
+                  <View style={{ borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, marginTop: 100, marginRight: 20, alignItems: 'center' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 18, fontFamily: 'sans-serif' }}>{moment(item.date).format('MMM Do, YYYY')} - {item.time}</Text>
                     <View>
-                      <Text style={{ fontSize: 20, fontWeight: 'bold', fontFamily: 'sans-serif' }}>{service.name}</Text>
-                      <View style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-                        <FontAwesome6 name="user-doctor" size={17} color="blue" />
-                        <Text style={{ fontSize: 15, fontFamily: 'sans-serif' }}>{doctor.name}</Text>
-                      </View>
+                      {doctor && doctor.image && doctor.image.length > 0 && (
+                        <Image
+                          source={{ uri: doctor.image[0].url }}
+                          style={{ width: 150, height: 200, borderRadius: 10 }}
+                        />)}
+                    </View>
+                    <View style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      gap: 10, alignItems: 'center'
+                    }}>
+                      {service && service.image && service.image.length > 0 && (
+                        <Image
+                          source={{ uri: service.image[0].url }}
+                          style={{ width: 90, height: 100, borderRadius: 10 }}
+                        />)}
 
-                      <View style={{ display: 'flex', flexDirection: 'row', gap: 3, alignItems: 'center', marginTop: 5 }}>
-                        <FontAwesome5 name="file-medical-alt" size={17} color="blue" />
-                        <Text style={{ fontSize: 15, fontFamily: 'sans-serif' }}>Id: #{item.service}</Text>
-                      </View>
-                      <View style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center', marginTop: 5 }}>
-                        <Ionicons name="document-text" size={17} color="blue" />
-                        <Text style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}>Status: {item.status}</Text>
+                      <View>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', fontFamily: 'sans-serif' }}>{service.name}</Text>
+                        <View style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center' }}>
+                          <FontAwesome6 name="user-doctor" size={17} color="blue" />
+                          <Text style={{ fontSize: 15, fontFamily: 'sans-serif' }}>{doctor.name}</Text>
+                        </View>
+
+                        <View style={{ display: 'flex', flexDirection: 'row', gap: 3, alignItems: 'center', marginTop: 5 }}>
+                          <FontAwesome5 name="file-medical-alt" size={17} color="blue" />
+                          <Text style={{ fontSize: 15, fontFamily: 'sans-serif' }}>Id: #{item.service}</Text>
+                        </View>
+                        <View style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center', marginTop: 5 }}>
+                          <Ionicons name="document-text" size={17} color="blue" />
+                          <Text style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}>Status: {item.status}</Text>
+                        </View>
                       </View>
                     </View>
-                    <View>
+                    <View style={{ flexDirection: 'row' }}>
                       {[1, 2, 3, 4, 5].map((star, index) => (
                         <View key={index}>
                           <MaterialCommunityIcons
@@ -257,9 +277,8 @@ export default function Appointment() {
                       ))}
                       <Text style={{ fontWeight: 'bold', marginTop: 5 }}>{averageRating.toFixed(1)}</Text>
                     </View>
-                  </View>
-                  <View style={{ alignItems: 'center', marginTop: 10 }}>
-                    <Text>Review</Text>
+                    <View style={{ alignItems: 'center', marginTop: 10 }}>
+                      {/* <Text>Review</Text>
                     <KeyboardAvoidingView>
                       <TextInput
                         // numberOfLines={3}
@@ -267,12 +286,17 @@ export default function Appointment() {
                         style={{ backgroundColor: '#E5E4E2', padding: 5, borderRadius: 10, color: 'gray', marginTop: 10, width: 300 }}
                       />
                     </KeyboardAvoidingView>
-                    <Text>{renderStars()}</Text>
-                    <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, borderRadius: 10, }} >
-                      <Text style={{ color: 'white', fontFamily: 'System', fontSize: 16 }}>Submit</Text>
-                    </TouchableOpacity>
+                    <Text>{renderStars()}</Text> */}
+                      <TouchableOpacity onPress={() => navigation.navigate('ReviewDoctor', {
+                        //  serviceId: item._id,
+                        serviceName: service.name,
+                        doctorId: doctor._id
+                      })} style={{ backgroundColor: 'blue', padding: 10, borderRadius: 10, }} >
+                        <Text style={{ color: 'white', fontFamily: 'System', fontSize: 16 }}>Review Doctor</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
+                </>
               );
             }}
           />

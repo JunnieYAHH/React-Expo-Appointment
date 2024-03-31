@@ -115,11 +115,11 @@ const appointmentController = {
     getUserAppointment: async (req, res) => {
         try {
             const { user } = req.query;
-            console.log('User ID', user);
+            // console.log('User ID', user);
 
             // Find appointments for the specified user
             const appointment = await Appointment.find({ user: user });
-            console.log(appointment)
+            // console.log(appointment)
 
             res.status(200).json({ message: "Appointments fetched successfully", appointment });
         } catch (error) {

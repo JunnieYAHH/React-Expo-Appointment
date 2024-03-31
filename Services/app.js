@@ -6,6 +6,14 @@ const userRoutes = require('./routes/userRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
+const dotenv = require('dotenv');
+const path = require('path');
+
+// Specify the correct path to the config.env file
+const envPath = path.resolve(__dirname, 'config', 'config.env');
+// console.log(envPath)
+dotenv.config({ path: envPath });
+// console.log(process.env.JWT_SECRET);
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -14,6 +22,7 @@ const port = process.env.PORT || 8000;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 
 // Connect to MongoDB
 mongoose.connect("mongodb+srv://gerelitopuyos:gerelitopuyos@atlascluster.7cyczkf.mongodb.net/ClinicAppointment?retryWrites=true&w=majority", {

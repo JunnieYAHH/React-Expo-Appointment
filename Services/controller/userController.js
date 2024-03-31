@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Appointment = require('../models/appointment');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cloudinary = require('cloudinary');
@@ -83,10 +84,31 @@ const userController = {
             }
 
             const token = jwt.sign({ userId: user._id }, secretKey);
-            res.status(200).json({ token });
+            res.status(200).json({ token, user });
         } catch (error) {
             console.error("Login Error:", error); // Add this line to log the error
             res.status(500).json({ message: "Login Error" });
+        }
+    },
+
+    getUser: async (req, res) => {
+        try {
+            const { userId } = req.query;
+            let query = {};
+            if (userId) {
+                query = { '_id': userId };
+            }
+            const user = await User.findById(query);
+            console.log(user)
+
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            res.status(200).json({ user });
+        } catch (error) {
+            console.error('Error fetching user:', error);
+            res.status(500).json({ message: 'Internal server error' });
         }
     },
 
@@ -116,14 +138,14 @@ const userController = {
 
             // Find appointments for the specified user
             const appointment = await Appointment.find({ user: user });
-            console.log(appointment)
+            // console.log(appointment)
 
             res.status(200).json({ message: "Appointments fetched successfully", appointment });
         } catch (error) {
             console.log('Error on Getting the User Appointment', error.message);
             res.status(500).json({ message: "Error fetching appointments", error: error.message });
         }
-    }
+    },
 };
 
 module.exports = userController;

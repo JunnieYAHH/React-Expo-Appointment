@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema(
         },
         isAdmin: {
             type: Boolean,
+            default: false,
         },
         image: [
             {
@@ -38,5 +39,11 @@ const userSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+userSchema.methods.getJwtToken = function () {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_TIME
+    })
+}
 
 module.exports = mongoose.model("users", userSchema);

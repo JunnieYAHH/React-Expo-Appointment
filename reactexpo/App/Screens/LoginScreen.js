@@ -39,8 +39,17 @@ const LoginScreen = () => {
             .post(`${baseURL}/users/login`, user)
             .then((response) => {
                 const token = response.data.token;
-                AsyncStorage.setItem("authToken", token);
-                navigation.replace('TabNavigation')
+                console.log('Login User with data',response.data.user.isAdmin)
+                if(response.data.user.isAdmin === false){
+                    // console.log('User is not admin')
+                    AsyncStorage.setItem("authToken", token);
+                    navigation.replace('TabNavigation')
+                } 
+                else {
+                    console.log('User is admin')
+                    AsyncStorage.setItem("authToken", token);
+                    navigation.replace('AdminTabNavigation')
+                }
             }).catch((error) => {
                 Alert.alert('Login Error', "Invalid Email and Password", error.message)
                 console.log(error.message);

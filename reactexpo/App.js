@@ -10,7 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './App/Screens/LoginScreen';
 import Register from './App/Screens/Register';
 import { UserContext } from './UserContext';
-
+import AdminTabNavigation from './App/Navigation/Admin/AdminTabNavigation';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +26,7 @@ export default function App() {
                 <Stack.Screen name="LoginScreen" component={LoginScreen} screenOptions={{ headerShown: false }} />
                 <Stack.Screen name="Register" component={Register} screenOptions={{ headerShown: false }} />
                 <Stack.Screen name="TabNavigation" component={TabNavigation} screenOptions={{ headerShown: false }} />
+                <Stack.Screen name="AdminTabNavigation" component={AdminTabNavigation} screenOptions={{ headerShown: false }} />
               </Stack.Navigator>
             </UserContext>
           </SignedOut>

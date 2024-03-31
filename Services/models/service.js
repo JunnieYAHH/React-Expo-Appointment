@@ -5,10 +5,6 @@ const serviceSchema = new mongoose.Schema({
     type: String,
     required: [true, "Service Name is Required"]
   },
-  date: {
-    type: Date,
-    required: [true, "Date is Required"]
-  },
   description: {
     type: String,
     required: [true, 'description Required'],
