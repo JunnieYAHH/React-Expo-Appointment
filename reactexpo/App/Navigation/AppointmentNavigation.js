@@ -9,7 +9,7 @@ const Stack = createStackNavigator();
 const AppointmentNavigation = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }} >
-            <Stack.Screen name='Appointment' component={Appointment} />
+            <Stack.Screen name='AppointmentScreen' component={Appointment} />
             <Stack.Screen name='ReviewDoctor' component={ReviewDoctor} />
         </Stack.Navigator>
     )

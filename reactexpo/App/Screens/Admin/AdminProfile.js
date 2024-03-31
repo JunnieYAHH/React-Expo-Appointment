@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import Colors from "../../assets/Shared/Colors";
-import bg from "../../assets/images/bg.png";
-import prof from "../../assets/images/dentist.jpg";
+import Colors from "../../../assets/Shared/Colors";
+import bg from "../../../assets/images/bg.png";
+import prof from "../../../assets/images/dentist.jpg";
 import { Entypo } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import baseURL from "../../assets/common/baseURL";
+import baseURL from "../../../assets/common/baseURL";
 import { jwtDecode } from "jwt-decode";
-import { UserType } from "../../UserContext";
+import { UserType } from "../../../UserContext";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "@clerk/clerk-expo";
 
-const Profile = () => {
+const AdminProfile = () => {
 
   const [services, setServices] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
@@ -153,8 +153,6 @@ const Profile = () => {
     </TouchableOpacity>
   );
 
-  console.log(currentUser)
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.white }}>
       <StatusBar backgroundColor={Colors.gray} />
@@ -171,20 +169,18 @@ const Profile = () => {
         </View>
 
         <View style={{ alignItems: "center", marginTop: 20 }}>
-          {currentUser && currentUser.image && currentUser.image.length > 0 && (
-            <Image
-              source={{ uri: currentUser.image[0].url }}
-              resizeMode="contain"
-              style={{
-                height: 155,
-                width: 155,
-                borderRadius: 999,
-                borderColor: Colors.primaries,
-                borderWidth: 2,
-                marginBottom: 10,
-              }}
-            />
-          )}
+          <Image
+            source={prof}
+            resizeMode="contain"
+            style={{
+              height: 155,
+              width: 155,
+              borderRadius: 999,
+              borderColor: Colors.primaries,
+              borderWidth: 2,
+              marginBottom: 10,
+            }}
+          />
           <Text
             style={{
               fontSize: 20,
@@ -192,7 +188,7 @@ const Profile = () => {
               marginVertical: 5,
             }}
           >
-            {currentUser.name}
+            Cardo Dalisay
           </Text>
           <Text
             style={{
@@ -286,4 +282,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default AdminProfile;

@@ -6,7 +6,7 @@ const sendUserEmail = require('../utils/sendUserEmail')
 const nodemailer = require('nodemailer');
 
 const appointmentController = {
-    // Register a new user
+    //  For create an appointment in the backend
     createDoctorAppointment: async (req, res) => {
         try {
             const data = req.body;

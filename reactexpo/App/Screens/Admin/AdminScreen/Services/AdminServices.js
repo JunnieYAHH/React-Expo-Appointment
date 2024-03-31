@@ -60,7 +60,7 @@ const AdminServices = () => {
     }
     return (
         <View>
-            <View style={{ borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, marginTop: 30, marginRight: 10, alignItems: 'center' }}>
+            <View style={{ borderWidth: 1, padding: 4, marginBottom: 10, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, marginTop: 30, marginRight: 10, alignItems: 'center' }}>
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <SectionLabel style={{ fontSize: 20, fontFamily: 'System' }} title={'Clinic Specialty'} ></SectionLabel>
                 </View>
@@ -79,8 +79,8 @@ const AdminServices = () => {
                     renderItem={({ item, index }) => (
                         <>
                             <View style={{ flexDirection: 'row' }}>
-                                <View style={{ alignItems: 'center', marginLeft: 22, marginRight: 4, borderWidth: 1, borderRadius: 12, borderBottomLeftRadius: 22, borderBottomRightRadius: 22 }}>
-                                    <View style={{ padding: 10, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, alignItems: 'center' }}>
+                                <View style={{ alignItems: 'center', marginLeft: 24, marginRight: 4, borderWidth: 1, borderRadius: 12, borderBottomLeftRadius: 22, borderBottomRightRadius: 22, marginBottom: 10 }}>
+                                    <View style={{ padding: 5, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, alignItems: 'center' }}>
                                         <View key={item._id} style={{ padding: 15, borderRadius: 99, alignItems: 'center' }}>
                                             {/* <Image source={{ uri: item.image[0].url }} style={{ width: 220, height: 220 }} />
                                             <Text>{item.name}</Text> */}

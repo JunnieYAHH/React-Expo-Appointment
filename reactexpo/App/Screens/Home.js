@@ -30,28 +30,11 @@ export default function Home() {
                 const decodedToken = jwtDecode(token);
                 const userId = decodedToken.userId
                 setUserId(userId)
-                fetchCurrentUser(userId);
             }
             fetchUser();
             fetchServices();
         }, []);
     }
-
-    const fetchCurrentUser = async (userId) => {
-        try {
-            if (userId) {
-                const response = await axios.get(`${baseURL}/users/get-current-user`, {
-                    params: {
-                        user_id: userId
-                    }
-                });
-                setCurrentUser(response.data.user);
-
-            }
-        } catch (error) {
-            console.error('Fetch Services Error:', error.message);
-        }
-    };
 
     const fetchServices = async () => {
         try {
@@ -62,62 +45,9 @@ export default function Home() {
         }
     };
 
-    const handleLogout = () => {
-        setCurrentUser([]);
-        AsyncStorage.clear()
-            .then(() => {
-                navigation.navigate('Login');
-                console.log('AsyncStorage cleared successfully.');
-            })
-            .catch((error) => {
-                console.error('Error clearing AsyncStorage:', error);
-            });
-    }
-    // const imageUrl = currentUser.image;
-
-    console.log(currentUser)
     return (
-        <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 40 : 0, }} >
+        <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 10 : 0, }} >
             {isSignedIn && <Header />}
-            {isSignedIn === false && (
-                <View>
-                    <View style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: 7,
-                        alignItems: 'center'
-                    }}>
-                        <View style={{ flexDirection: 'row' }} >
-                            {currentUser && currentUser.image && currentUser.image.length > 0 && (
-                                <Image source={{ uri: currentUser.image[0].url }} style={{ width: 40, height: 40, borderRadius:20 }} />
-                            )}
-                            <View style={{ marginLeft: 5 }}>
-                                <Text>Hello,</Text>
-                                {currentUser && (
-                                    <>
-                                        <Text style={{
-                                            fontSize: 15,
-                                            fontWeight: 'bold',
-                                        }}>
-                                            {currentUser.name}
-                                        </Text>
-                                    </>
-                                )}
-                            </View>
-                        </View>
-                        <Ionicons name="notifications-outline"
-                            size={28}
-                            color="black"
-                            style={{ flexDirection: 'column', marginLeft: 165 }} />
-                        <Button
-                            title='SignOut'
-                            onPress={handleLogout}
-                            style={{ borderRadius: 100 }}
-                        />
-                    </View>
-                </View>
-            )}
-
             <View style={{ marginTop: 15, width: 350, marginLeft: 20, height: 40 }}>
                 <Pressable size={22} style={{ padding: 10, flexDirection: "row", alignItems: 'center', marginHorizontal: 7, gap: 10, backgroundColor: 'white', borderRadius: 3, height: 40, flex: 1 }}>
                     <Ionicons name="search-outline" size={20} color="black" />
