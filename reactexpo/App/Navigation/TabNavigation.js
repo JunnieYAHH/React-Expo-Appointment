@@ -11,6 +11,7 @@ import HomeNavigation from './HomeNavigation'
 import AppointmentNavigation from './AppointmentNavigation'
 import AdminHomeNavigation from './Admin/AdminHomeNavigation'
 import ManageAppointment from '../Screens/Admin/AdminScreen/Appointment/ManageAppointment'
+import ProfileNavigation from './ProfileNavigation'
 
 const Tab = createBottomTabNavigator()
 export default function TabNavigation() {
@@ -27,14 +28,14 @@ export default function TabNavigation() {
                         )
                     }}
                 />
-                <Tab.Screen name='User Appointment' component={AppointmentNavigation}
+                <Tab.Screen name='UserAppointment' component={AppointmentNavigation}
                     options={{
                         tabBarIcon: ({ color, size }) => (
                             <Ionicons name="calendar" size={24} color={color} />
                         )
                     }}
                 />
-                <Tab.Screen name='Profile' component={Profile}
+                <Tab.Screen name='Profile' component={ProfileNavigation}
                     options={{
                         tabBarIcon: ({ color, size }) => (
                             <FontAwesome5 name="user-circle" size={24} color={color} />

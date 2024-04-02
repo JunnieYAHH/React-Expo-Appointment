@@ -51,7 +51,7 @@ const userController = {
                 image: { public_id: result.public_id, url: result.secure_url }
             });
 
-            console.log(user)
+            // console.log(user)
             user = await user.save();
             return res.status(201).json({
                 success: true,
@@ -99,7 +99,7 @@ const userController = {
                 query = { '_id': userId };
             }
             const user = await User.findById(query);
-            console.log(user)
+            // console.log(user)
 
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
@@ -120,8 +120,8 @@ const userController = {
             if (user_id) {
                 query = { '_id': user_id };
             }
-            // console.log(query);
-            const user = await User.findOne(query)
+            const user = await User.findById(query)
+            // console.log(user);
 
             res.status(201).json({ message: "Current User fetch successfully", user });
         } catch (error) {
@@ -134,7 +134,7 @@ const userController = {
     getCurrentUserAppointment: async (req, res) => {
         try {
             const { user } = req.query;
-            console.log('User ID', user);
+            // console.log('User ID', user);
 
             // Find appointments for the specified user
             const appointment = await Appointment.find({ user: user });
@@ -146,6 +146,7 @@ const userController = {
             res.status(500).json({ message: "Error fetching appointments", error: error.message });
         }
     },
+
     getAllUser: async (req, res, next) => {
         try {
             const users = await User.find()
@@ -154,6 +155,49 @@ const userController = {
         } catch (error) {
             console.log('Error on Getting All User ', error.message);
             res.status(500).json({ message: "Error fetching Users", error: error.message });
+        }
+    },
+    updateUser: async (req, res) => {
+        try {
+            const { _id, name, email, phone, isAdmin } = req.body
+            // console.log(req.body);
+            let user = await User.findById({ "_id": _id });
+
+            const imageUrl = req.file.path;
+            // console.log('reqbody',req.body)
+            // console.log('user',user)
+            // console.log('image',imageUrl)
+
+            const resultDelete = await cloudinary.v2.uploader.destroy(user.image[0].public_id);
+
+            const result = await cloudinary.uploader.upload(imageUrl, {
+                folder: 'Clinic/users',
+                width: 150,
+                crop: "scale"
+            });
+
+            user.name = name;
+            user.email = email;
+            user.phone = phone;
+            user.isAdmin = isAdmin;
+            user.image = { public_id: result.public_id, url: result.secure_url };
+
+            user = await User.findByIdAndUpdate(_id, user, {
+                new: true,
+                runValidators: true,
+                useFindAndModify: false
+            });
+
+            return res.status(200).json({
+                success: true,
+                user
+            });
+        } catch (error) {
+            console.error(error.message);
+            return res.status(500).json({
+                success: false,
+                message: 'Update User Server Error'
+            });
         }
     }
 };
