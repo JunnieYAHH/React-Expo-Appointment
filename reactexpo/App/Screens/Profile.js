@@ -84,7 +84,7 @@ const Profile = () => {
     console.log("Terms and Policies function");
   };
 
-  
+
   const addAccount = () => {
     console.log("Aadd account ");
   };
@@ -150,7 +150,7 @@ const Profile = () => {
   );
 
   // console.log(userId)
-
+  console.log(user)
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.white }}>
       <StatusBar backgroundColor={Colors.gray} />
@@ -203,6 +203,9 @@ const Profile = () => {
             }}
           >
             {currentUser.name}
+            {user && (
+              user.fullName
+            )}
           </Text>
           <View
             style={{
@@ -211,7 +214,7 @@ const Profile = () => {
               marginBottom: 10,
             }}
           >
-         <Fontisto name="email" size={20} color="black" />
+            <Fontisto name="email" size={20} color="black" />
             <Text
               style={{
                 fontSize: 14,
@@ -219,7 +222,10 @@ const Profile = () => {
                 marginLeft: 4,
               }}
             >
-                {currentUser.email}
+              {currentUser.email}
+              {user && user.primaryEmailAddress && (
+                <Text>Email: {user.primaryEmailAddress.emailAddress}</Text>
+              )}
             </Text>
           </View>
           <View
@@ -238,7 +244,7 @@ const Profile = () => {
               }}
             >
               {currentUser.phone}
-            
+
             </Text>
           </View>
         </View>
