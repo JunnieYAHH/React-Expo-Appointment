@@ -101,7 +101,6 @@ const Register = () => {
             const cameraStatus = await Camera.requestCameraPermissionsAsync();
             setHasCameraPermission(cameraStatus.status === 'granted');
         })();
-
     }, []);
 
 

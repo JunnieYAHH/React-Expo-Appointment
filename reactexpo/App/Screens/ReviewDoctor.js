@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, KeyboardAvoidingView, TextInput, Alert, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, Image, KeyboardAvoidingView, TextInput, Alert, ScrollView, Modal } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import PageHeader from '../Components/Shared/PageHeader'
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -12,6 +12,7 @@ import { UserType } from '../../UserContext';
 import { useUser } from '@clerk/clerk-expo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode';
+import { FontAwesome } from '@expo/vector-icons';
 
 const ReviewDoctor = () => {
   const [doctor, setDoctorToReview] = useState([]);
@@ -26,6 +27,7 @@ const ReviewDoctor = () => {
   const { userId, setUserId } = useContext(UserType)
   const doctorId = param?.doctorId || '';
   const serviceName = param?.serviceName || '';
+  const [modalVisible, setModalVisible] = useState(false);
 
   // console.log(doctorId)
 
@@ -161,7 +163,7 @@ const ReviewDoctor = () => {
           doctorId: doctorId
         }
       }
-      console.log(data);
+      // console.log(data);
       const response = await axios.put(`${baseURL}/doctors/create-doctor-review`, data);
       Alert.alert('You have successfully reviewed the doctor')
       getReviewDoctor(doctorId);
@@ -190,6 +192,35 @@ const ReviewDoctor = () => {
       console.error('Error deleting review:', error);
     }
   };
+
+  const handleUpdateReview = async (idReview) => {
+    try {
+      let data = {};
+      if (user) {
+        data = {
+          googleId: currentGoogleId,
+          comment: comment,
+          rating: rating,
+          doctorId: doctorId,
+          reviewId: idReview,
+        }
+      } else {
+        data = {
+          userId: userId,
+          comment: comment,
+          rating: rating,
+          doctor_id: doctorId,
+          review_id: idReview,
+        }
+      }
+      console.log(data)
+      const response = await axios.put(`${baseURL}/doctors/update-doctor-review`, data);
+      getReviewDoctor(doctorId);
+      Alert.alert('The review is now updated.')
+    } catch (error) {
+      console.error('Error update review:', error.message);
+    }
+  }
 
   return (
     <View style={{ padding: 10, marginTop: 40, flex: 1 }}>
@@ -263,27 +294,91 @@ const ReviewDoctor = () => {
         </View>
         <View style={{ padding: 20, marginTop: 20, backgroundColor: '#FAF9F6' }}>
           {doctor.review && doctor.review.map((review) => (
-            <View key={review._id} style={{ marginBottom: 20 }}>
-              {review.userData && review.userData.image && (
-                <Image
-                  source={{ uri: review.userData.image[0].url }} 
-                  style={{ width: 40, height: 40, borderRadius: 50, marginTop: 10 }}
-                />
-              )}
-              <Text>User: {review.userData ? review.userData.email : review.user}</Text>
-              <Text>Rating: {review.rating}</Text>
-              <Text>Comment: {review.comment}</Text>
-              <Text>DoctorID: {doctor._id}</Text>
-              <Text>reviewId: {review._id}</Text>
-              {((review.user === currentUser._id) || (review.user === currentGoogleId)) && (
-                <TouchableOpacity
-                  onPress={() => handleDeleteReview(review._id)}
-                  style={{ backgroundColor: 'blue', padding: 10, borderRadius: 10, marginTop: 20 }}
-                >
-                  <Text style={{ color: 'white', fontFamily: 'System', fontSize: 16 }}>Delete Review</Text>
-                </TouchableOpacity>
-              )}
-            </View>
+            <>
+              <View key={review._id} style={{ marginBottom: 20 }}>
+                {review.userData && review.userData.image && (
+                  <Image
+                    source={{ uri: review.userData.image[0].url }}
+                    style={{ width: 40, height: 40, borderRadius: 50, marginTop: 10 }}
+                  />
+                )}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <FontAwesome name="user" size={17} color="black" />
+                  <Text style={{ marginLeft: 7 }}>{review.userData ? review.userData.email : review.user}</Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems:'center' }}>
+                  <FontAwesome name="commenting" size={17} color="black" />
+                  <Text style={{marginLeft:5}}>{review.comment}</Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  {[...Array(5)].map((_, index) => (
+                    <MaterialCommunityIcons
+                      key={index}
+                      name={index < Math.floor(review.rating) ? 'star' : index < review.rating ? 'star-half-full' : 'star-outline'}
+                      size={20}
+                      color="#FFD700"
+                    />
+                  ))}
+                  <Text style={{ fontWeight: 'bold', marginLeft: 5 }}>{review.rating.toFixed(1)}</Text>
+                </View>
+                {((review.user === currentUser._id) || (review.user === currentGoogleId)) && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() => setModalVisible(true)}
+                      style={{ backgroundColor: 'blue', padding: 10, borderRadius: 10, marginTop: 20, alignItems: 'center' }}
+                    >
+                      <Text style={{ color: 'white', fontFamily: 'System', fontSize: 16 }}>Add Review</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleDeleteReview(review._id)}
+                      style={{ backgroundColor: 'blue', padding: 10, borderRadius: 10, marginTop: 20 }}
+                    >
+                      <Text style={{ color: 'white', fontFamily: 'System', fontSize: 16 }}>Delete Review</Text>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}
+              >
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                  <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10, width: '80%' }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Add Review</Text>
+                    {/* Rating Stars */}
+                    <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                      {renderStars()}
+                    </View>
+                    {/* Comment Input */}
+                    <TextInput
+                      placeholder="Write your comment..."
+                      value={comment}
+                      onChangeText={setComment}
+                      style={{ borderWidth: 1, borderColor: 'gray', borderRadius: 5, padding: 10, marginBottom: 10 }}
+                      multiline={true}
+                      numberOfLines={4}
+                    />
+                    {/* Submit Button */}
+                    <TouchableOpacity
+                      onPress={() => handleUpdateReview(review._id)}
+                      style={{ backgroundColor: 'blue', padding: 10, borderRadius: 10, alignItems: 'center' }}
+                    >
+                      <Text style={{ color: 'white', fontFamily: 'System', fontSize: 16 }}>Submit Review</Text>
+                    </TouchableOpacity>
+                    {/* Close Button */}
+                    <TouchableOpacity
+                      onPress={() => setModalVisible(false)}
+                      style={{ marginTop: 10, alignItems: 'center' }}
+                    >
+                      <Text style={{ color: 'blue', fontFamily: 'System', fontSize: 16 }}>Close</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
+            </>
+
           ))}
         </View>
       </ScrollView>

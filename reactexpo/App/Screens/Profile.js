@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, Image, TouchableOpacity, ScrollView, Button } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Colors from "../../assets/Shared/Colors";
 import bg from "../../assets/images/bg.png";
@@ -13,15 +13,16 @@ import baseURL from "../../assets/common/baseURL";
 import { jwtDecode } from "jwt-decode";
 import { UserType } from "../../UserContext";
 import { useNavigation } from "@react-navigation/native";
-import { useUser } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 
 const Profile = () => {
 
   const [services, setServices] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
   const navigation = useNavigation();
-  const { isSignedIn } = useUser();
+  const { isLoaded, isSignedIn, user } = useUser();
   const { userId, setUserId } = useContext(UserType)
+  const { signOut } = useAuth();
 
   if (!isSignedIn) {
     useEffect(() => {
@@ -35,7 +36,6 @@ const Profile = () => {
       fetchUser();
     }, []);
   }
-
   const fetchCurrentUser = async (userId) => {
     try {
       if (userId) {
@@ -45,12 +45,14 @@ const Profile = () => {
           }
         });
         setCurrentUser(response.data.user);
-
       }
     } catch (error) {
       console.error('Fetch Services Error:', error.message);
     }
   };
+  useEffect(() => {
+    fetchCurrentUser(userId)
+  }, [currentUser])
 
   const navigateToEditProfile = () => {
     navigation.navigate("EditProfile");
@@ -79,6 +81,7 @@ const Profile = () => {
   const navigateToTermsAndPolicies = () => {
     console.log("Terms and Policies function");
   };
+
   const navigateToReportProblem = () => {
     console.log("Report a problem");
   };
@@ -124,7 +127,6 @@ const Profile = () => {
       text: "Report a problem",
       action: navigateToReportProblem,
     },
-    { icon: "people-outline", text: "Add Account", action: addAccount },
     { icon: "logout", text: "Log out", action: logout },
   ];
 
@@ -153,7 +155,7 @@ const Profile = () => {
     </TouchableOpacity>
   );
 
-  console.log(currentUser)
+  // console.log(userId)
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.white }}>
@@ -185,6 +187,20 @@ const Profile = () => {
               }}
             />
           )}
+          {user && (
+            <Image
+              source={{ uri: user.externalAccounts[0].imageUrl }}
+              resizeMode="contain"
+              style={{
+                height: 155,
+                width: 155,
+                borderRadius: 999,
+                borderColor: Colors.primaries,
+                borderWidth: 2,
+                marginBottom: 10,
+              }}
+            />
+          )}
           <Text
             style={{
               fontSize: 20,
@@ -202,7 +218,7 @@ const Profile = () => {
               marginBottom: 5,
             }}
           >
-            Interior Design Ediwow
+            Clinic Mobile Application
           </Text>
           <View
             style={{
@@ -219,36 +235,42 @@ const Profile = () => {
                 marginLeft: 4,
               }}
             >
-              Taguig City
+              {currentUser.email}
+              {user && (
+                user.fullName
+              )}
             </Text>
           </View>
         </View>
-
-        <TouchableOpacity
-          onPress={navigateToEditProfile}
-          style={{
-            width: 124,
-            height: 46,
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: Colors.secondaryGray,
-            borderRadius: 10,
-            marginTop: 20,
-            alignSelf: "center",
-          }}
-        >
-          <Text
+        {!isSignedIn && (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ProfileUpdate', {
+              userId: userId
+            })}
             style={{
-              fontSize: 14,
-              color: Colors.black,
+              width: 124,
+              height: 46,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: Colors.secondaryGray,
+              borderRadius: 10,
+              marginTop: 20,
+              alignSelf: "center",
             }}
           >
-            Edit Profile
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{
+                fontSize: 14,
+                color: Colors.black,
+              }}
+            >
+              Edit Profile
+            </Text>
+          </TouchableOpacity>
+        )}
 
         <ScrollView style={{ marginHorizontal: 12 }}>
-          <View style={{ marginTop: 20 }}>
+          {/* <View style={{ marginTop: 20 }}>
             <Text style={{ fontFamily: "sans-serif", marginVertical: 10 }}>Account</Text>
             <View>
               {accountItems.map((item, index) => (
@@ -257,7 +279,7 @@ const Profile = () => {
                 </React.Fragment>
               ))}
             </View>
-          </View>
+          </View> */}
 
           <View style={{ marginBottom: 12 }}>
             <Text style={{ fontFamily: "sans-serif", marginVertical: 10 }}>Support & About</Text>
@@ -273,11 +295,19 @@ const Profile = () => {
           <View style={{ marginBottom: 12 }}>
             <Text style={{ fontFamily: "sans-serif", marginVertical: 10 }}>Actions</Text>
             <View>
-              {actionsItems.map((item, index) => (
-                <React.Fragment key={index}>
-                  {renderSettingsItem(item)}
-                </React.Fragment>
-              ))}
+              {user ? (
+                <Button
+                  title="Sign Out"
+                  onPress={() => signOut()}
+                  style={{ borderRadius: 100 }}
+                />
+              ) : (
+                actionsItems.map((item, index) => (
+                  <React.Fragment key={index}>
+                    {renderSettingsItem(item)}
+                  </React.Fragment>
+                ))
+              )}
             </View>
           </View>
         </ScrollView>

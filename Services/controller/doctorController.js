@@ -10,28 +10,37 @@ const doctorController = {
     // Register a new user
     createDoctor: async (req, res) => {
         try {
-            const { name, email, gender, service, image, review } = req.body;
+            const { name, email, gender, service } = req.body;
 
-            // Upload image to Cloudinary
-            // const uploadedImage = await cloudinary.uploader.upload(image, { folder: 'doctors' });
+            const images = req.files;
 
-            // Map the reviews array to properly format the reviews
-            const reviews = review.map(item => ({
-                rating: item.rating,
-                comment: item.comment
-            }));
 
-            // Create new doctor instance
+            let imageData = []
+
+            for (let i = 0; i < images.length; i++) {
+                const imagePath = images[i].path;
+                try {
+                    const result = await cloudinary.uploader.upload(imagePath, {
+                        folder: 'Clinic/doctors',
+                        width: 150,
+                        crop: 'scale'
+                    });
+                    // console.log('These are the uploaded images:', result);
+                    imageData.push({ public_id: result.public_id, url: result.secure_url });
+                } catch (error) {
+                    console.log(error.message);
+                }
+            }
+
+
             const doctor = new Doctor({
                 name,
                 email,
                 gender,
                 service,
-                // image: { public_id: uploadedImage.public_id, url: uploadedImage.secure_url },
-                review: reviews
+                image: imageData,
             });
 
-            // Save doctor to database
             await doctor.save();
 
             res.status(201).json({ message: 'Doctor created successfully', doctor });
@@ -124,6 +133,34 @@ const doctorController = {
             res.status(500).json({ message: "Error adding review", error: error.message });
         }
     },
+    updateDoctorReview: async (req, res) => {
+        // const { review_id, doctor_id } = req.params;
+        const { comment, rating, review_id, doctor_id } = req.body;
+    
+        try {
+            const doctor = await Doctor.findById(doctor_id);
+    
+            if (!doctor) {
+                return res.status(404).json({ error: "Doctor not found" });
+            }
+    
+            const reviewIndex = doctor.review.findIndex(review => review._id.toString() === review_id);
+    
+            if (reviewIndex === -1) {
+                return res.status(404).json({ error: "Review not found" });
+            }
+    
+            doctor.review[reviewIndex].comment = comment;
+            doctor.review[reviewIndex].rating = rating;
+    
+            await doctor.save();
+    
+            return res.status(200).json({ message: "Review updated successfully", doctor });
+        } catch (error) {
+            console.error("Error updating review:", error);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+    },
     deleteDoctorReview: async (req, res) => {
         try {
             const { doctor_id, review_id } = req.query;
@@ -152,6 +189,117 @@ const doctorController = {
         } catch (error) {
             console.error('Error Fetching all doctors:', error);
             res.status(500).json({ message: "Error fetching all doctors", error: error.message });
+        }
+    },
+    deleteDoctor: async (req, res) => {
+        try {
+            // console.log(req.params.id)
+            const doctor = await Doctor.findByIdAndDelete(req.params.id);
+            if (!doctor) {
+                return next(new ErrorHandler('Doctor not found', 404));
+            }
+            res.status(200).json({
+                success: true,
+                message: 'Doctor is Deleted.'
+            })
+        } catch (error) {
+            console.error(error.message);
+            return res.status(500).json({
+                success: false,
+                message: 'Delete Doctor Server Error'
+            });
+        }
+    },
+    getDoctorToUpdate: async (req, res) => {
+        try {
+            const { doctorId } = req.query;
+            let query = {};
+            if (doctorId) {
+                query = { '_id': doctorId };
+            }
+
+            const doctor = await Doctor.findById(query)
+            res.status(201).json({ message: "Doctor fetch to update successfully", doctor });
+        } catch (error) {
+            console.error("Fetch Doctor To update:", error);
+            res.status(500).json({ message: "Update Fetching Doctor Error" });
+        }
+    },
+    updateDoctor: async (req, res) => {
+        try {
+            const { name, email, gender, service } = req.body;
+            let doctor = await Doctor.findById(req.params.id);
+            let images = req.files || [];
+
+            for (let i = 0; i < doctor.image.length; i++) {
+                // console.log(doctor.image[i].public_id);
+                const result = await cloudinary.v2.uploader.destroy(doctor.image[i].public_id);
+            }
+
+            let imageData = []
+            for (let i = 0; i < images.length; i++) {
+                const imagePath = images[i].path;
+                try {
+                    const result = await cloudinary.uploader.upload(imagePath, {
+                        folder: 'Clinic/doctors',
+                        width: 150,
+                        crop: 'scale'
+                    });
+                    // console.log('These are the uploaded images:', result);
+                    imageData.push({ public_id: result.public_id, url: result.secure_url });
+                } catch (error) {
+                    console.log(error.message);
+                }
+            }
+
+            doctor.name = name;
+            doctor.email = email;
+            doctor.gender = gender;
+            doctor.service = service;
+
+            if (imageData.length > 0) {
+                doctor.image = imageData;
+            }
+
+            doctor = await Doctor.findByIdAndUpdate(req.params.id, doctor, {
+                new: true,
+                runValidators: true,
+                useFindAndModify: false
+            });
+
+            return res.status(200).json({
+                success: true,
+                doctor
+            });
+        } catch (error) {
+            console.error(error.message);
+            return res.status(500).json({
+                success: false,
+                message: 'Update Doctor Server Error'
+            });
+        }
+    },
+    doctorAggregatedRatings: async (req, res) => {
+        try {
+            const aggregatedRatings = await Doctor.aggregate([
+                {
+                    $unwind: "$review"
+                },
+                {
+                    $group: {
+                        _id: "$review.rating",
+                        count: { $sum: 1 }
+                    }
+                },
+                {
+                    $sort: { _id: 1 }
+                }
+            ]);
+
+            res.json(aggregatedRatings);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: "Internal server error" });
         }
     }
 };

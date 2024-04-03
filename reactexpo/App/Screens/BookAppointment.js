@@ -173,7 +173,7 @@ const BookAppointment = () => {
                 }
             }
             const response = await axios.post(`${baseURL}/appointments/create-doctor-appointment`, data);
-            navigation.navigate('AppointmentScreen')
+            navigation.navigate('UserAppointment')
             Alert.alert('It is now Appointed')
         } catch (error) {
             console.error('Create Appointment:', error.message);

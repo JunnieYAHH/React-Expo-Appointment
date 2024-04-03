@@ -23,6 +23,7 @@ const AdminProfile = () => {
   const { isSignedIn } = useUser();
   const { userId, setUserId } = useContext(UserType)
 
+
   if (!isSignedIn) {
     useEffect(() => {
       const fetchUser = async () => {
@@ -200,7 +201,7 @@ const AdminProfile = () => {
               marginBottom: 5,
             }}
           >
-            Interior Design Ediwow
+            Clinic Mobile Application
           </Text>
           <View
             style={{
@@ -217,45 +218,12 @@ const AdminProfile = () => {
                 marginLeft: 4,
               }}
             >
-              Taguig City
+              {currentUser.email}
             </Text>
           </View>
         </View>
 
-        <TouchableOpacity
-          onPress={navigateToEditProfile}
-          style={{
-            width: 124,
-            height: 46,
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: Colors.secondaryGray,
-            borderRadius: 10,
-            marginTop: 20,
-            alignSelf: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 14,
-              color: Colors.black,
-            }}
-          >
-            Edit Profile
-          </Text>
-        </TouchableOpacity>
-
         <ScrollView style={{ marginHorizontal: 12 }}>
-          <View style={{ marginTop: 20 }}>
-            <Text style={{ fontFamily: "sans-serif", marginVertical: 10 }}>Account</Text>
-            <View>
-              {accountItems.map((item, index) => (
-                <React.Fragment key={index}>
-                  {renderSettingsItem(item)}
-                </React.Fragment>
-              ))}
-            </View>
-          </View>
 
           <View style={{ marginBottom: 12 }}>
             <Text style={{ fontFamily: "sans-serif", marginVertical: 10 }}>Support & About</Text>
