@@ -14,6 +14,8 @@ import { jwtDecode } from "jwt-decode";
 import { UserType } from "../../UserContext";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth, useUser } from "@clerk/clerk-expo";
+import { Fontisto } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 const Profile = () => {
 
@@ -82,11 +84,7 @@ const Profile = () => {
     console.log("Terms and Policies function");
   };
 
-  const navigateToReportProblem = () => {
-    console.log("Report a problem");
-    navigation.navigate('Report')
-  };
-
+  
   const addAccount = () => {
     console.log("Aadd account ");
   };
@@ -123,11 +121,6 @@ const Profile = () => {
   ];
 
   const actionsItems = [
-    {
-      icon: "outlined-flag",
-      text: "Report a problem",
-      action: navigateToReportProblem,
-    },
     { icon: "logout", text: "Log out", action: logout },
   ];
 
@@ -211,16 +204,6 @@ const Profile = () => {
           >
             {currentUser.name}
           </Text>
-          <Text
-            style={{
-              color: Colors.black,
-              fontSize: 14,
-              lineHeight: 20,
-              marginBottom: 5,
-            }}
-          >
-            Clinic Mobile Application
-          </Text>
           <View
             style={{
               flexDirection: "row",
@@ -228,7 +211,25 @@ const Profile = () => {
               marginBottom: 10,
             }}
           >
-            <Entypo name="location" size={24} color="black" />
+         <Fontisto name="email" size={20} color="black" />
+            <Text
+              style={{
+                fontSize: 14,
+                lineHeight: 15,
+                marginLeft: 4,
+              }}
+            >
+                {currentUser.email}
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: 10,
+            }}
+          >
+            <Feather name="phone" size={20} color="black" />
             <Text
               style={{
                 fontSize: 14,
@@ -236,10 +237,8 @@ const Profile = () => {
                 marginLeft: 4,
               }}
             >
-              {currentUser.email}
-              {user && (
-                user.fullName
-              )}
+              {currentUser.phone}
+            
             </Text>
           </View>
         </View>

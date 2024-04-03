@@ -3,7 +3,7 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import Profile from '../Screens/Profile';
 import ProfileUpdate from '../Screens/ProfileUpdate';
-import Report from '../Screens/Report';
+
 
 const Stack = createStackNavigator();
 
@@ -12,7 +12,7 @@ const ProfileNavigation = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }} >
             <Stack.Screen name='ProfileScreen' component={Profile} />
             <Stack.Screen name='ProfileUpdate' component={ProfileUpdate} />
-            <Stack.Screen name='Report' component={Report} />
+   
         </Stack.Navigator>
     )
 }
