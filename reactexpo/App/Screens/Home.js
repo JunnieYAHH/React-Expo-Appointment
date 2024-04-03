@@ -14,6 +14,7 @@ import Categories from '../Components/Home/Categories';
 import { UserType } from '../../UserContext';
 import { jwtDecode } from 'jwt-decode';
 import baseURL from '../../assets/common/baseURL';
+import Homepage from '../Components/Home/Homepage';
 
 
 export default function Home() {
@@ -51,30 +52,30 @@ export default function Home() {
     }
 
     return (
-        <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 10 : 0, }} >
-            {isSignedIn && <Header />}
-            <View style={{ marginTop: 15, width: 350, marginLeft: 20, height: 40 }}>
-                <Pressable size={22} style={{ padding: 10, flexDirection: "row", alignItems: 'center', marginHorizontal: 7, gap: 10, backgroundColor: 'white', borderRadius: 3, height: 40, flex: 1 }}>
-                    <Ionicons name="search-outline" size={20} color="black" />
-                    <TextInput placeholder='Search' />
-                    <Feather name="mic" size={20} color="gray" style={{ marginLeft: 220 }} />
-                </Pressable>
-            </View>
-            <Slider />
-            <Categories />
+        <ScrollView>
+            <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 10 : 0, }} >
+                {isSignedIn && <Header />}
+                <View style={{ marginTop: 15, width: 350, marginLeft: 20, height: 40 }}>
+                    <Pressable size={22} style={{ padding: 10, flexDirection: "row", alignItems: 'center', marginHorizontal: 7, gap: 10, backgroundColor: 'white', borderRadius: 3, height: 40, flex: 1 }}>
+                        <Ionicons name="search-outline" size={20} color="black" />
+                        <TextInput placeholder='Search' />
+                        <Feather name="mic" size={20} color="gray" style={{ marginLeft: 220 }} />
+                    </Pressable>
+                </View>
+                <Slider />
+                <Categories />
                 <View style={styles.container}>
-                <TouchableOpacity
-                    style={styles.floatingButton}
-                    onPress={onButtonPress}
-                >
-                    <Ionicons name="logo-wechat" size={50} color="black" />
+                    <TouchableOpacity
+                        style={styles.floatingButton}
+                        onPress={onButtonPress}
+                    >
+                        <Ionicons name="logo-wechat" size={50} color="black" />
 
-                </TouchableOpacity>
-            </View>
-           
-        </SafeAreaView >
-        
-        
+                    </TouchableOpacity>
+                </View>
+                <Homepage />
+            </SafeAreaView >
+        </ScrollView>
     )
 }
 
@@ -82,7 +83,7 @@ export default function Home() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor : '#fff',
+        backgroundColor: '#fff',
 
     },
 

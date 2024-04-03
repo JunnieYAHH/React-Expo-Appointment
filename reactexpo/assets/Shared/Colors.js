@@ -1,6 +1,6 @@
 export default {
     white : '#fff',
-    
+    light:'#faf0e6',
     deepskyblue: '#87cefa',
     LIGHT_GRAY: "#FF5733 ",
     PRIMARY : "#0000FF",
