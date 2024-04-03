@@ -84,6 +84,7 @@ const Profile = () => {
 
   const navigateToReportProblem = () => {
     console.log("Report a problem");
+    navigation.navigate('Report')
   };
 
   const addAccount = () => {

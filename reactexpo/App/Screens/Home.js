@@ -1,4 +1,4 @@
-import { View, Text, Button, SafeAreaView, Platform, ScrollView, Pressable, TextInput, Image } from 'react-native'
+import { View, Text, Button, SafeAreaView, Platform, ScrollView, Pressable, TextInput, Image, TouchableOpacity, Alert, StyleSheet } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useAuth, useUser } from '@clerk/clerk-expo';
 import SearchBar from '../Components/Home/SearchBar';
@@ -14,6 +14,7 @@ import Categories from '../Components/Home/Categories';
 import { UserType } from '../../UserContext';
 import { jwtDecode } from 'jwt-decode';
 import baseURL from '../../assets/common/baseURL';
+
 
 export default function Home() {
     const { isLoaded, signOut } = useAuth();
@@ -45,6 +46,10 @@ export default function Home() {
         }
     };
 
+    const onButtonPress = () => {
+        Alert.alert('Floating Button Pressed')
+    }
+
     return (
         <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 10 : 0, }} >
             {isSignedIn && <Header />}
@@ -57,6 +62,38 @@ export default function Home() {
             </View>
             <Slider />
             <Categories />
+                <View style={styles.container}>
+                <TouchableOpacity
+                    style={styles.floatingButton}
+                    onPress={onButtonPress}
+                >
+                    <Ionicons name="logo-wechat" size={50} color="black" />
+
+                </TouchableOpacity>
+            </View>
+           
         </SafeAreaView >
+        
+        
     )
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor : '#fff',
+
+    },
+
+    floatingButton: {
+        position: 'absolute',
+        width: 60,
+        height: 60,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 30,
+        bottom: -450,
+    }
+
+})
