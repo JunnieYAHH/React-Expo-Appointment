@@ -21,17 +21,17 @@ const AdminHomeCharts = () => {
                 <TouchableOpacity
                     style={[activeIndex == 0 ? styles.activeTab : styles.inActiveTab]}
                     onPress={() => setActiveIndex(0)}>
-                    <Text style={[activeIndex == 0 ? styles.activeText : styles.inActiveText]} >Appointment</Text>
+                    <Text style={[activeIndex == 0 ? styles.activeText : styles.inActiveText]} >Appointment Status</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[activeIndex == 1 ? styles.activeTab : styles.inActiveTab]}
                     onPress={() => setActiveIndex(1)}>
-                    <Text style={[activeIndex == 1 ? styles.activeText : styles.inActiveText]} >DoctorsPerService</Text>
+                    <Text style={[activeIndex == 1 ? styles.activeText : styles.inActiveText]} >Doctors Per Service</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[activeIndex == 2 ? styles.activeTab : styles.inActiveTab]}
                     onPress={() => setActiveIndex(2)}>
-                    <Text style={[activeIndex == 2 ? styles.activeText : styles.inActiveText]} >DoctorRatings</Text>
+                    <Text style={[activeIndex == 2 ? styles.activeText : styles.inActiveText]} >Clinic Ratings</Text>
                 </TouchableOpacity>
             </View>
             {activeIndex === 0 && (
