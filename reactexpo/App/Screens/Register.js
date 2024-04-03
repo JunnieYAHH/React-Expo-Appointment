@@ -126,6 +126,7 @@ const Register = () => {
                                     variant={"ghost"}
                                     onPress={() => takePhoto()}><Text> add photo</Text>
                                 </TouchableOpacity>
+                                
                                 <TouchableOpacity
                                     variant={"ghost"}
                                     onPress={() => {
