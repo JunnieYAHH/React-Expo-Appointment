@@ -14,6 +14,9 @@ import Categories from '../Components/Home/Categories';
 import { UserType } from '../../UserContext';
 import { jwtDecode } from 'jwt-decode';
 import baseURL from '../../assets/common/baseURL';
+import { WebView } from 'react-native-webview';
+import { LiveSupport } from './LiveSupport';
+
 
 
 export default function Home() {
@@ -46,9 +49,12 @@ export default function Home() {
         }
     };
 
+
     const onButtonPress = () => {
-        Alert.alert('Floating Button Pressed')
-    }
+        console.log("Chat Live Support");
+        navigation.navigate('LiveSupport')
+    };
+
 
     return (
         <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 10 : 0, }} >
@@ -62,19 +68,23 @@ export default function Home() {
             </View>
             <Slider />
             <Categories />
-                <View style={styles.container}>
+            <View style={styles.container}>
                 <TouchableOpacity
                     style={styles.floatingButton}
-                    onPress={onButtonPress}
+                    onPress={() => onButtonPress()}
                 >
-                    <Ionicons name="logo-wechat" size={50} color="black" />
+                   <Ionicons name="chatbubbles-outline" size={40} color= '#357EC7' />
+                   <Text>
+                    Chat!
+                   </Text>
 
                 </TouchableOpacity>
             </View>
-           
+      
+
         </SafeAreaView >
-        
-        
+
+
     )
 }
 
@@ -82,7 +92,8 @@ export default function Home() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor : '#fff',
+        backgroundColor: '#ADD8E6',
+       
 
     },
 
@@ -93,7 +104,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         right: 30,
-        bottom: -450,
+        bottom: -390,
+        backgroundColor: '#ADD8E6',
+        padding: 6,
     }
 
 })
