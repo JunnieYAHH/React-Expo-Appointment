@@ -27,6 +27,7 @@ export default function App() {
                 <Stack.Screen name="Register" component={Register} screenOptions={{ headerShown: false }} />
                 <Stack.Screen name="TabNavigation" component={TabNavigation} screenOptions={{ headerShown: false }} />
                 <Stack.Screen name="AdminTabNavigation" component={AdminTabNavigation} screenOptions={{ headerShown: false }} />
+
               </Stack.Navigator>
             </UserContext>
           </SignedOut>

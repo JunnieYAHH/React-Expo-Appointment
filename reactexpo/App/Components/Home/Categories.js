@@ -41,7 +41,7 @@ const Categories = () => {
               })}
               style={{ alignItems: 'center', marginLeft: 22 }}
             >
-              <View key={item._id} style={{ padding: 15, borderRadius: 99, alignItems: 'center' }}>
+              <View style={{ padding: 8, borderRadius: 8, backgroundColor: '#87cefa', alignItems: 'center' }}>
                 <Image source={{ uri: item.image[0].url }} style={{ width: 30, height: 30 }} />
               </View>
               <Text>{item.name}</Text>
