@@ -14,5 +14,6 @@ router.put('/accept-appointment/:id', appointmentController.acceptAppointment);
 router.put('/decline-appointment/:id', appointmentController.declineAppointment);
 router.put('/complete-appointment/:id', appointmentController.completeAppointment);
 router.delete('/delete-appointment/:id', appointmentController.deleteAppointment);
+router.get('/get-all-appointments', appointmentController.getAllAppointment);
 
 module.exports = router;

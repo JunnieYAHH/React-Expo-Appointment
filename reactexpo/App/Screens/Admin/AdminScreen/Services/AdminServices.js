@@ -8,6 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AdminHomeHeader from '../../AdminHomeHeader';
 
 const AdminServices = () => {
     const [services, setServices] = useState([]);
@@ -34,7 +35,7 @@ const AdminServices = () => {
             }
         };
         getallService()
-    })
+    }, [services])
     // console.log(services)
 
     const handleDeleteService = async (id) => {
@@ -52,19 +53,21 @@ const AdminServices = () => {
             console.log('This is the serviceId', id)
 
             const result = await axios.delete(`${baseURL}/services/delete-service/${id}`, config)
-            setServices(services.filter(service => service.id !== id));
+            setServices(prevServices => prevServices.filter(service => service._id !== id));
             Alert.alert('Service Delete Successfully')
         } catch (error) {
             Alert.alert('Service Delete Unsuccessful', error.message)
         }
     }
+
     return (
         <View>
-            <View style={{ borderWidth: 1, padding: 4, marginBottom: 10, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, marginTop: 30, marginRight: 10, alignItems: 'center' }}>
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <SectionLabel style={{ fontSize: 20, fontFamily: 'System' }} title={'Clinic Specialty'} ></SectionLabel>
+            <AdminHomeHeader />
+            <View style={{ borderWidth: 1, padding: 4, marginBottom: 10, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, marginTop: 30, marginRight: 10, alignItems: 'center', marginLeft: 6 }}>
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
+                    <SectionLabel style={{ fontSize: 20, fontFamily: 'System' }} title={'Services List'} ></SectionLabel>
                 </View>
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 15, borderWidth: 1, width: 100, textAlign: 'center', alignItems: 'center', justifyContent: 'center', borderRadius: 20 }}>
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 20, borderWidth: 1, width: 100, textAlign: 'center', alignItems: 'center', justifyContent: 'center', borderRadius: 20 }}>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('ServiceCreate')}
                     >
@@ -75,10 +78,10 @@ const AdminServices = () => {
                     data={services}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    style={{ flexDirection: 'row' }}
+                    style={{ flexDirection: 'row', }}
                     renderItem={({ item, index }) => (
                         <>
-                            <View style={{ flexDirection: 'row' }}>
+                            <View style={{ flexDirection: 'row', marginLeft: 21, marginTop: 10 }}>
                                 <View style={{ alignItems: 'center', marginLeft: 24, marginRight: 4, borderWidth: 1, borderRadius: 12, borderBottomLeftRadius: 22, borderBottomRightRadius: 22, marginBottom: 10 }}>
                                     <View style={{ padding: 5, borderRadius: 12, borderColor: Colors.LIGHT_GRAY, backgroundColor: Colors.white, alignItems: 'center' }}>
                                         <View key={item._id} style={{ padding: 15, borderRadius: 99, alignItems: 'center' }}>
@@ -101,7 +104,7 @@ const AdminServices = () => {
                                         </View>
                                         <Text>{item.description}</Text>
                                     </View>
-                                    <View style={{ flexDirection: 'row', marginRight: 27 }}>
+                                    <View style={{ flexDirection: 'row', marginRight: 27, marginTop:7, marginBottom:8 }}>
                                         <TouchableOpacity
                                             onPress={() => navigation.navigate('ServiceUpdate', {
                                                 serviceId: item._id

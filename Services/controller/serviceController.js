@@ -32,7 +32,7 @@ const serviceController = {
                 }
             }
 
-            console.log(imageData)
+            // console.log(imageData)
 
             const service = new Service({
                 name,
@@ -143,14 +143,18 @@ const serviceController = {
             // console.log(req.params.id)
             const service = await Service.findByIdAndDelete(req.params.id);
             if (!service) {
-                return next(new ErrorHandler('Product not found', 404));
+                return next(new ErrorHandler('Service not found', 404));
             }
             res.status(200).json({
                 success: true,
                 message: 'Service is Deleted.'
             })
         } catch (error) {
-
+            console.error(error.message);
+            return res.status(500).json({
+                success: false,
+                message: 'Delete Service Server Error'
+            });
         }
     }
 };

@@ -61,7 +61,7 @@ const ServiceCreate = () => {
         .then((response) => {
           console.log(response);
           Alert.alert("Create Services Successfully");
-          navigation.navigate('AdminHome')
+          navigation.navigate('AdminServices')
         })
         .catch((error) => {
           console.error("Create Service Error", error.message);
