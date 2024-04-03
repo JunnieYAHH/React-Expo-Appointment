@@ -7,8 +7,8 @@ let baseURL = '';
 // ? baseURL = 'http://192.168.0.189:8000/api/v1'
 // : baseURL = 'http://192.168.0.189:8000/api/v1'
 
-? baseURL = 'http://192.168.68.104:8000/api/v1'
-: baseURL = 'http://192.168.68.104:8000/api/v1'
+// ? baseURL = 'http://192.168.68.104:8000/api/v1'
+// : baseURL = 'http://192.168.68.104:8000/api/v1'
 
 // ? baseURL = 'http://192.168.0.189:8000/api/v1'
 // : baseURL = 'http://192.168.0.189:8000/api/v1'

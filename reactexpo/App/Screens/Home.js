@@ -39,30 +39,29 @@ export default function Home() {
     };
 
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                <View style={styles.searchContainer}>
-                    <Pressable style={styles.searchBar}>
-                        <Ionicons name="search-outline" size={20} color="black" />
-                        <TextInput placeholder='Search' style={styles.input} />
-                        <Feather name="mic" size={20} color="gray" style={styles.micIcon} />
-                    </Pressable>
+        <View style={{ flex: 1 }}>
+            <ScrollView>
+                <View style={styles.container}>
+                    <View style={styles.searchContainer}>
+                        <Pressable style={styles.searchBar}>
+                            <Ionicons name="search-outline" size={20} color="black" />
+                            <TextInput placeholder='Search' style={styles.input} />
+                            <Feather name="mic" size={20} color="gray" style={styles.micIcon} />
+                        </Pressable>
+                    </View>
+                    <Slider />
+                    <Categories />
+                    <Homepage />
                 </View>
-                <Slider />
-                <Categories />
-                <Homepage />
-                {/* Floating chat button */}
-            </View>
-            <View style={styles.chatButtonContainer}>
-                <TouchableOpacity
-                    style={styles.chatButton}
-                    onPress={() => onButtonPress()}
-                >
-                    <Ionicons name="chatbubbles-outline" size={40} color={Colors.primary} />
-                    <Text>Chat!</Text>
-                </TouchableOpacity>
-            </View>
-        </ScrollView>
+            </ScrollView>
+            <TouchableOpacity
+                style={styles.chatButton}
+                onPress={() => onButtonPress()}
+            >
+                <Ionicons name="chatbubbles-outline" size={40} color="#357EC7"/>
+                <Text>Chat!</Text>
+            </TouchableOpacity>
+        </View>
     );
 }
 
@@ -95,19 +94,17 @@ const styles = StyleSheet.create({
     micIcon: {
         marginLeft: 220
     },
-    chatButtonContainer: {
-        position: 'absolute',
-        width: '100%',
-        alignItems: 'center',
-        bottom: 20,
-    },
     chatButton: {
+        position: 'absolute',
         width: 60,
         height: 60,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: Colors.primary,
+        backgroundColor: "white",
         padding: 6,
         borderRadius: 30, // Make the button circular
+        right: 20, // Adjust the position from the right
+        bottom: 20, // Adjust the position from the bottom
+        zIndex: 999, // Ensure the button stays on top
     },
 });

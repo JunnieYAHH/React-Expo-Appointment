@@ -80,9 +80,9 @@ const AdminProfile = () => {
   const navigateToTermsAndPolicies = () => {
     console.log("Terms and Policies function");
   };
-  const navigateToReportProblem = () => {
-    console.log("Report a problem");
-  };
+  // const navigateToReportProblem = () => {
+  //   console.log("Report a problem");
+  // };
 
   const addAccount = () => {
     console.log("Aadd account ");
@@ -120,12 +120,7 @@ const AdminProfile = () => {
   ];
 
   const actionsItems = [
-    {
-      icon: "outlined-flag",
-      text: "Report a problem",
-      action: navigateToReportProblem,
-    },
-    { icon: "people-outline", text: "Add Account", action: addAccount },
+    
     { icon: "logout", text: "Log out", action: logout },
   ];
 
@@ -226,7 +221,7 @@ const AdminProfile = () => {
         <ScrollView style={{ marginHorizontal: 12 }}>
 
           <View style={{ marginBottom: 12 }}>
-            <Text style={{ fontFamily: "sans-serif", marginVertical: 10 }}>Support & About</Text>
+            <Text style={{ fontFamily: "sans-serif", marginVertical: 10 }}>Support</Text>
             <View>
               {supportItems.map((item, index) => (
                 <React.Fragment key={index}>
