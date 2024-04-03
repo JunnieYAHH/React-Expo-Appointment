@@ -449,6 +449,7 @@ const appointmentController = {
       res.status(500).json({ message: "Error Getting All The Appointment Appointment", error: error.message });
     }
   }
+  
 };
 
 module.exports = appointmentController;
