@@ -14,6 +14,9 @@ import Categories from '../Components/Home/Categories';
 import { UserType } from '../../UserContext';
 import { jwtDecode } from 'jwt-decode';
 import baseURL from '../../assets/common/baseURL';
+import Homepage from '../Components/Home/Homepage';
+
+
 
 export default function Home() {
     const { isLoaded, signOut } = useAuth();
@@ -57,6 +60,8 @@ export default function Home() {
             </View>
             <Slider />
             <Categories />
+            <Homepage/>
+            
         </SafeAreaView >
     )
 }
