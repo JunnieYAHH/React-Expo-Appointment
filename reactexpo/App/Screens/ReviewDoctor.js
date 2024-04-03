@@ -13,6 +13,8 @@ import { useUser } from '@clerk/clerk-expo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode';
 import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+
 
 const ReviewDoctor = () => {
   const [doctor, setDoctorToReview] = useState([]);
@@ -295,6 +297,7 @@ const ReviewDoctor = () => {
         <View style={{ padding: 20, marginTop: 20, backgroundColor: '#FAF9F6' }}>
           {doctor.review && doctor.review.map((review) => (
             <>
+              {console.log('review', review)}
               <View key={review._id} style={{ marginBottom: 20 }}>
                 {review.userData && review.userData.image && (
                   <Image
@@ -306,9 +309,9 @@ const ReviewDoctor = () => {
                   <FontAwesome name="user" size={17} color="black" />
                   <Text style={{ marginLeft: 7 }}>{review.userData ? review.userData.email : review.user}</Text>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems:'center' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <FontAwesome name="commenting" size={17} color="black" />
-                  <Text style={{marginLeft:5}}>{review.comment}</Text>
+                  <Text style={{ marginLeft: 5 }}>{review.comment}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   {[...Array(5)].map((_, index) => (
@@ -323,22 +326,24 @@ const ReviewDoctor = () => {
                 </View>
                 {((review.user === currentUser._id) || (review.user === currentGoogleId)) && (
                   <>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                       onPress={() => setModalVisible(true)}
                       style={{ backgroundColor: 'blue', padding: 10, borderRadius: 10, marginTop: 20, alignItems: 'center' }}
                     >
                       <Text style={{ color: 'white', fontFamily: 'System', fontSize: 16 }}>Add Review</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity
                       onPress={() => handleDeleteReview(review._id)}
-                      style={{ backgroundColor: 'blue', padding: 10, borderRadius: 10, marginTop: 20 }}
-                    >
-                      <Text style={{ color: 'white', fontFamily: 'System', fontSize: 16 }}>Delete Review</Text>
+                      style={{ alignItems: 'flex-end', width: 100 }}
+                      >
+                      <View style={{ flexDirection: 'row', alignItems: 'center', padding: 2, borderRadius: 60,marginRight:70 }}>
+                        <AntDesign name="delete" size={17} color="red" />
+                      </View>
                     </TouchableOpacity>
                   </>
                 )}
               </View>
-              <Modal
+              {/* <Modal
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible}
@@ -347,11 +352,9 @@ const ReviewDoctor = () => {
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                   <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10, width: '80%' }}>
                     <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Add Review</Text>
-                    {/* Rating Stars */}
                     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                       {renderStars()}
                     </View>
-                    {/* Comment Input */}
                     <TextInput
                       placeholder="Write your comment..."
                       value={comment}
@@ -360,14 +363,12 @@ const ReviewDoctor = () => {
                       multiline={true}
                       numberOfLines={4}
                     />
-                    {/* Submit Button */}
                     <TouchableOpacity
                       onPress={() => handleUpdateReview(review._id)}
                       style={{ backgroundColor: 'blue', padding: 10, borderRadius: 10, alignItems: 'center' }}
                     >
                       <Text style={{ color: 'white', fontFamily: 'System', fontSize: 16 }}>Submit Review</Text>
                     </TouchableOpacity>
-                    {/* Close Button */}
                     <TouchableOpacity
                       onPress={() => setModalVisible(false)}
                       style={{ marginTop: 10, alignItems: 'center' }}
@@ -376,7 +377,7 @@ const ReviewDoctor = () => {
                     </TouchableOpacity>
                   </View>
                 </View>
-              </Modal>
+              </Modal> */}
             </>
 
           ))}

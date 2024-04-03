@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Doctor = require('../models/doctor');
 const Appointment = require('../models/appointment');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -99,7 +100,7 @@ const userController = {
                 query = { '_id': userId };
             }
             const user = await User.findById(query);
-            // console.log(user)
+            console.log(user)
 
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
