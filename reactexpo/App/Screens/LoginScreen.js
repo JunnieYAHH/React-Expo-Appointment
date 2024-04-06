@@ -10,8 +10,8 @@ import SignInWithOAuth from '../Components/SignInWithOAuth';
 import baseURL from '../../assets/common/baseURL';
 
 const LoginScreen = () => {
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -29,32 +29,39 @@ const LoginScreen = () => {
 
     }, [])
 
-    const handleLogin = () => {
-        const user = {
-            email: email,
-            password: password,
-        };
+    const handleLogin = async () => {
+        try {
+            if (email === "" || password === "") {
+                Alert.alert("Please enter your credentials");
+                return; // Exit the function early if email or password is empty
+            }
 
-        axios
-            .post(`${baseURL}/users/login`, user)
-            .then((response) => {
-                const token = response.data.token;
-                console.log('Login User with data',response.data.user.isAdmin)
-                if(response.data.user.isAdmin === false){
-                    // console.log('User is not admin')
-                    AsyncStorage.setItem("authToken", token);
-                    navigation.replace('TabNavigation')
-                } 
-                else {
-                    console.log('User is admin')
-                    AsyncStorage.setItem("authToken", token);
-                    navigation.replace('AdminTabNavigation')
-                }
-            }).catch((error) => {
-                Alert.alert('Login Error', "Invalid Email and Password", error.message)
-                console.log(error.message);
-            })
-    }
+            const user = {
+                email: email,
+                password: password,
+            };
+
+            const response = await axios.post(`${baseURL}/users/login`, user);
+
+            const token = response.data.token;
+            console.log('Login User with data', response.data.user.isAdmin);
+            if (response.data.user.isAdmin === false) {
+                AsyncStorage.setItem("authToken", token);
+                navigation.replace('TabNavigation');
+            } else {
+                console.log('User is admin');
+                AsyncStorage.setItem("authToken", token);
+                navigation.replace('AdminTabNavigation');
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                Alert.alert('Login Error', 'Invalid Email and Password');
+            } else {
+                console.error('Login Error:', error.message);
+                Alert.alert('Login Error', 'An error occurred during login. Please try again.');
+            }
+        }
+    };
 
     return (
         <ScrollView>

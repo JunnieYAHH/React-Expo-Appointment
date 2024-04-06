@@ -34,6 +34,19 @@ const appointmentController = {
           status: 'pending'
         });
       }
+
+      const existingAppointment = await Appointment.findOne({
+        date: req.body.date,
+        time: req.body.time
+      });
+
+      if (existingAppointment && existingAppointment.status === 'accepted') {
+        return res.status(400).json({
+          message: "There is already an accepted appointment at this time.",
+          existingAppointment: existingAppointment
+        });
+      }
+
       let userinfo = {}
       let doctorinfo = {}
       let serviceinfo = {}

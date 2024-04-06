@@ -176,7 +176,12 @@ const BookAppointment = () => {
             navigation.navigate('UserAppointment')
             Alert.alert('It is now Appointed')
         } catch (error) {
-            console.error('Create Appointment:', error.message);
+            if (error.response && error.response.status === 400 && error.response.data.message === "There is already an appointment at this time.") {
+                console.log('Appointment error:', error.response.data.message);
+                // Handle UI display of the error message to the user
+            } else {
+                console.error('Create Appointment:', error.message);
+            }
         }
     }
 
