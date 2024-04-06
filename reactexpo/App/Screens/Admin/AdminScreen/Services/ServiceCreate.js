@@ -34,6 +34,9 @@ const ServiceCreate = () => {
 
   const handleCreateService = async () => {
     try {
+      if ( name === "" || description === "" ) {
+        Alert.alert("Please fill in the form correctly");
+    }
       let formData = new FormData();
 
       formData.append("name", name);

@@ -295,10 +295,10 @@ const ReviewDoctor = () => {
           </View>
         </View>
         <View style={{ padding: 20, marginTop: 20, backgroundColor: '#FAF9F6' }}>
-          {doctor.review && doctor.review.map((review) => (
+          {doctor.review && doctor.review.map((review, index) => (
             <>
               {console.log('review', review)}
-              <View key={review._id} style={{ marginBottom: 20 }}>
+              <View key={index} style={{ marginBottom: 20 }}>
                 {review.userData && review.userData.image && (
                   <Image
                     source={{ uri: review.userData.image[0].url }}
