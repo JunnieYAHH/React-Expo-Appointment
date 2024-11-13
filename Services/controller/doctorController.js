@@ -1,10 +1,5 @@
 const Doctor = require('../models/doctor');
 const cloudinary = require('cloudinary');
-cloudinary.config({
-    cloud_name: 'ds7jufrxl',
-    api_key: '827497948387292',
-    api_secret: 'qZygsilGaETbzQ5rnN8v-k8Ai4g',
-})
 
 const doctorController = {
     // Register a new user
