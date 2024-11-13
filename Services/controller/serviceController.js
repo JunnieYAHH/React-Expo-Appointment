@@ -1,12 +1,6 @@
 const Service = require('../models/service');
 const cloudinary = require('cloudinary');
 
-cloudinary.config({
-    cloud_name: 'ds7jufrxl',
-    api_key: '827497948387292',
-    api_secret: 'qZygsilGaETbzQ5rnN8v-k8Ai4g',
-})
-
 const serviceController = {
     // Register a new user
     createService: async (req, res) => {
