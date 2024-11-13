@@ -6,20 +6,6 @@ const jwt = require('jsonwebtoken');
 const cloudinary = require('cloudinary');
 const crypto = require('crypto');
 
-// Controller methods for user operations
-//endpoint to login in the app
-const generateSecretKey = () => {
-    const secretKey = crypto.randomBytes(32).toString("hex");
-    return secretKey
-}
-const secretKey = generateSecretKey()
-
-cloudinary.config({
-    cloud_name: 'ds7jufrxl',
-    api_key: '827497948387292',
-    api_secret: 'qZygsilGaETbzQ5rnN8v-k8Ai4g',
-})
-
 
 const userController = {
     // Register a new user
